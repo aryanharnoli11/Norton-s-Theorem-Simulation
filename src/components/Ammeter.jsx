@@ -22,17 +22,17 @@ const clamp = (value, min, max) => (
 )
 
 const needleCalibration = [
-  { value: 0, angle: 180 },
-  { value: 1, angle: 196 },
-  { value: 2, angle: 212 },
-  { value: 3, angle: 230 },
-  { value: 4, angle: 248 },
-  { value: 5, angle: 270 },
-  { value: 6, angle: 291 },
-  { value: 7, angle: 309 },
-  { value: 8, angle: 327 },
-  { value: 9, angle: 344 },
-  { value: 10, angle: 360 },
+  { value: 0, angle: 270 },
+  { value: 1, angle: 286 },
+  { value: 2, angle: 302 },
+  { value: 3, angle: 320 },
+  { value: 4, angle: 338 },
+  { value: 5, angle: 360 },
+  { value: 6, angle: 381 },
+  { value: 7, angle: 399 },
+  { value: 8, angle: 417 },
+  { value: 9, angle: 434 },
+  { value: 10, angle: 450 },
 ]
 
 const getNeedleAngle = (value) => {
