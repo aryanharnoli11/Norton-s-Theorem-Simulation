@@ -9,10 +9,10 @@ const toFiniteNumber = (
     : fallback
 }
 
-const toResistance = (value) => (
+const toResistanceOhms = (value) => (
   Math.max(
-    toFiniteNumber(value, 1),
-    0.0001,
+    toFiniteNumber(value, 1) * 1000,
+    0.1,
   )
 )
 
@@ -32,10 +32,10 @@ export const calculateReadings = ({
         )
       : 0
 
-  const R1 = toResistance(r1)
-  const R2 = toResistance(r2)
-  const R3 = toResistance(r3)
-  const RL = toResistance(rl)
+  const R1 = toResistanceOhms(r1)
+const R2 = toResistanceOhms(r2)
+const R3 = toResistanceOhms(r3)
+const RL = toResistanceOhms(rl)
 
   /*
    * Norton resistance:

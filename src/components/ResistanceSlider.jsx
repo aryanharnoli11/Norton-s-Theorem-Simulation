@@ -151,13 +151,13 @@ const ResistanceSlider = ({
       }`}
     >
       <label
-        className="resistance-slider__label"
-        htmlFor={`${label}-slider`}
-      >
-        {label.slice(0, 1)}
-        <sub>{label.slice(1)}</sub>
-        {' '}(&Omega;)
-      </label>
+  className="resistance-slider__label"
+  htmlFor={`${label}-slider`}
+>
+  {label.slice(0, 1)}
+  <sub>{label.slice(1)}</sub>
+  {' '}(kΩ)
+</label>
 
       <div className="resistance-slider__control">
         <input

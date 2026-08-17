@@ -200,18 +200,7 @@ const AI_GUIDE_AUDIO_OWNER = 'ai-guide'
       //text: 'Connect terminal 2 to terminal 10.',
       audio: AI_GUIDE_AUDIO.connect2To10,
     },
-    /*{
-      key: 'case3-17-19',
-      terminals: ['17-endpoint', '19-endpoint'],
-      text: 'Keep voltage source connected from terminal 17 to terminal 19.',
-      audio: null,
-    },
-    {
-      key: 'case3-18-20',
-      terminals: ['18-endpoint', '20-endpoint'],
-      text: 'Keep voltage source connected from terminal 18 to terminal 20.',
-      audio: null,
-    },*/
+    
   ],
 }
 const BASE_WIDTH = 1440
@@ -219,7 +208,7 @@ const BASE_HEIGHT = 960
 const GRAPH_SECTION_GAP = 28
 const GRAPH_SECTION_HEIGHT = 1100
 const CONTENT_HEIGHT = BASE_HEIGHT + GRAPH_SECTION_GAP + GRAPH_SECTION_HEIGHT
-const PANEL_MAX_SCALE = 0.78
+const PANEL_MAX_SCALE = 1
 const PANEL_VIEWPORT_MARGIN = 10
 const MIN_GRAPH_READINGS = 1
 const MAX_OBSERVATIONS = 10
@@ -378,7 +367,7 @@ const App = () => {
   const [r1, setR1] = useState(1)
   const [r2, setR2] = useState(1)
   const [r3, setR3] = useState(1)
-  const [rl, setRl] = useState(10)
+const [rl, setRl] = useState(1)
   const [resistanceSet, setResistanceSet] = useState(false)
   const [voltage, setVoltage] = useState(0)
   const [powerOn, setPowerOn] = useState(false)
@@ -829,21 +818,6 @@ playAiGuideAudio(audioPath)
 [showStepAlert,playAiGuideAudio]
 )
 
-/*useEffect(() => {
-  if (!aiGuideEnabled) return
-  if (aiGuideJustEnabledRef.current) return
-  if (lastInstructionAudioRef.current === instructionStep) return
-
-  const message = AI_GUIDE_STEP_MESSAGES[instructionStep]
-  if (!message) return
-
-// Don't speak automatically if we are already playing
-if (aiGuideAudioRef.current && !aiGuideAudioRef.current.paused) {
-  return
-}
-
-speakGuideMessage(message)
-}, [instructionStep, aiGuideEnabled])*/
 const speakCurrentInstruction = useCallback(
   (step = instructionStep) => {
     if (!aiGuideEnabled) return
@@ -1128,7 +1102,7 @@ const canAddReading =
   setR1(1)
   setR2(1)
   setR3(1)
-  setRl(100)
+  setRl(1)
 
   setResistanceSet(false)
 

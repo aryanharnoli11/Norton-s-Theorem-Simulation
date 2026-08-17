@@ -451,12 +451,9 @@ const handleVerify = () => {
 
         <label className="norton-equation-term norton-equation-numerator">
 
-          <span>
-            I<sub>N</sub>
-          </span>
-
+          
           <span className="norton-equation-multiply">
-            × R<sub>N</sub>
+             R<sub>N</sub>
           </span>
 
           <input
