@@ -1,11 +1,9 @@
 #app-wrapper {
   width: 100%;
-  min-height: 100vh;
   overflow-x: hidden;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-bottom: 24px;
   background: #2b170d;
 }
 
@@ -20,7 +18,7 @@
   top: 0;
   left: 0;
   width: 1440px;
-  height: 1418px;
+  height: auto;
   transform-origin: top left;
   backface-visibility: hidden;
   contain: layout paint style;
@@ -2588,6 +2586,20 @@ li.instruction-substep--active {
   object-fit: contain;
   pointer-events: none;
   user-select: none;
+}
+
+.digital-multimeter__knob {
+  position: absolute;
+  top: 85px;
+  left: 40px;
+  z-index: 3;
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  transform: rotate(48deg);
+  transform-origin: center;
 }
 
 /* Reading over the black screen in the image */

@@ -777,9 +777,11 @@
 }
 .connection-lab .jtk-connector,
 .connection-lab svg.jtk-connector {
-  z-index: 10 !important;
+  /* Keep connected leads above the equipment artwork instead of letting the
+     last few pixels disappear beneath a meter or power-supply image. */
+  z-index: 104 !important;
 }
 
 .connection-lab .jtk-overlay {
-  z-index: 11 !important;
+  z-index: 108 !important;
 }

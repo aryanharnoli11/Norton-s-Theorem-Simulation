@@ -142,6 +142,10 @@ const ResistanceSlider = ({
   const decimalPlaces =
     getDecimalPlaces(step)
 
+  const displayedValue = Number(
+    sliderValue.toFixed(decimalPlaces),
+  ).toString()
+
   return (
     <div
       className={`resistance-slider ${
@@ -179,9 +183,7 @@ const ResistanceSlider = ({
       </div>
 
       <span className="resistance-slider__value">
-        {sliderValue.toFixed(
-          decimalPlaces,
-        )}
+        {displayedValue}
       </span>
     </div>
   )

@@ -14,6 +14,28 @@ import {
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max)
 const WALKTHROUGH_AUDIO_OWNER = 'walkthrough'
+
+const scrollPageToTop = () => {
+  const resetScroll = () => {
+    window.scrollTo({
+      behavior: 'auto',
+      left: 0,
+      top: 0,
+    })
+
+    /* Fallbacks for browsers that use either element as the scroll root. */
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+  }
+
+  resetScroll()
+
+  /* The body scroll lock is released after React commits the closed overlay. */
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(resetScroll)
+  })
+}
+
 const getElementRect = (element) => {
   if (!element) {
     return null
@@ -107,6 +129,8 @@ const [isAudioPlaying, setIsAudioPlaying] = useState(false)
   setTargetRect(null)
 
   if (completed) {
+    scrollPageToTop()
+
     window.dispatchEvent(
       new Event('walkthrough-complete'),
     )
@@ -212,7 +236,7 @@ const toggleStepAudio = useCallback(async () => {
   playStepAudio,
 ])
 
-const skipToLastStep = useCallback(() => {
+const skip = useCallback(() => {
   stopAudio('walkthrough-skip')
   moveToStep(totalSteps - 1)
 }, [moveToStep, stopAudio, totalSteps])
@@ -378,7 +402,7 @@ useEffect(() => {
     targetRect,
     totalSteps,
    isAudioPlaying,
-skipToLastStep,
+skip,
 toggleStepAudio,
   }), [
     activeStep,
@@ -398,7 +422,7 @@ toggleStepAudio,
     totalSteps,
     walkthroughConfig,
     isAudioPlaying,
-skipToLastStep,
+skip,
 toggleStepAudio,
   ])
 

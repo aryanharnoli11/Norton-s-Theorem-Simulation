@@ -1,9 +1,9 @@
 {
-  "experimentName": "Basic Electrical Science Lab",
+  "experimentName": "Norton's Theorem Virtual Lab",
   "defaultLocale": "en",
   "locales": ["en"],
   "audio": {
-    "autoplay": false
+    "autoplay": true
   },
   "steps": [
     {
@@ -13,9 +13,9 @@
         "en": "Aim"
       },
       "description": {
-        "en": "To verify the Superposition Theorem by recording the branch currents under three conditions: (i) with only the current source active, (ii) with only the voltage source active, and (iii) with both sources connected"
+        "en": "The aim of this experiment is to verify Norton's Theorem by determining the Norton current and Norton resistance, then comparing the calculated load current with the observed load current."
       },
-      "audio": "/ai-guide-audio/Aim.wav",
+      "audio": "/ai-guide-audio/Norton Aim.wav",
       "placement": "bottom"
     },
     {
@@ -56,7 +56,7 @@
   "target": "#auto-connect-button",
   "title": { "en": "Auto Connect button" },
   "description": {
-    "en": "Click on the AUTO CONNECT button to automatically make the required connections for the selected case as per the given instructions.\nCase 1: Connects the Current Source only and short-circuits the voltage source.\nCase 2: Connects the Voltage Source only and open-circuits the current source.\nCase 3: Connects both the Current Source and Voltage Source."
+    "en": "Click AUTO CONNECT to make the required connections for the current Norton measurement stage automatically."
   },
   "audio": "/ai-guide-audio/Auto Connect Button.wav",
   "placement": "right"
@@ -78,7 +78,7 @@
   "target": "#calculate-button",
   "title": { "en": "Calculate Button" },
   "description": {
-    "en": "The CALCULATE button auto-fills resistance values, source values and observed currents in the Calculation Panel. For verification, you have to manually calculate the total current using the superposition theorem concept and verify it using the VERIFY button."
+    "en": "The CALCULATE button transfers the measured Norton values to the calculation panel. Enter the Norton current and resistance values, calculate the load current, and use VERIFY to compare it with the observed value."
   },
   "audio": "/ai-guide-audio/Calculate Button.wav",
   "placement": "bottom"
@@ -111,41 +111,41 @@
         "en": "Resistance Sliders"
       },
       "description": {
-        "en": " Set the values of R1, R2, and R3 before making the circuit connections. These resistance values must remain the same for all three cases to ensure accurate verification of the Superposition Theorem."
+        "en": "Set R1, R2, R3, and RL before making the circuit connections. Keep these values unchanged throughout the experiment."
       },
       "audio": "/ai-guide-audio/Resistance Sliders.wav",
       "placement": "right"
     },
  {
   "id": 11,
-  "target": "#current-source",
+  "target": "#digital-multimeter",
   "title": {
-    "en": " DC Current Source"
+    "en": "Digital Multimeter"
   },
   "description": {
-    "en": "The current source supplies current to the circuit. For case 1, activate the current source and set the desired current value by varying the slider.\n\nRating: 10 A DC."
+    "en": "The digital multimeter is used with the supply switched off to measure the Norton resistance seen at the load terminals."
   },
-  "audio": "/ai-guide-audio/Current Source.wav",
+  "audio": "/ai-guide-audio/Resistance Sliders.wav",
   "placement": "left"
 },
 {
   "id": 12,
-  "target": "#ammeters-walkthrough-target",
+  "target": "#ammeter-a",
   "title": { "en": "DC Ammeters" },
   "description": {
-    "en": "DC Ammeters are used to measure the branch currents in the circuit. Record the current readings for each branch under all three cases. These readings will be used later to verify the Superposition Theorem.\n\nRating: 0-10A DC."
+    "en": "The DC ammeter measures the short-circuit current and the load current during their respective Norton measurement stages.\n\nRating: 0-10 A DC."
   },
   "audio": "/ai-guide-audio/DC Ammeters.wav",
   "placement": "bottom"
 },
     {
   "id": 13,
-  "target": "#power-supply-2",
+  "target": "#power-supply",
   "title": {
     "en": "DC Voltage Source"
   },
   "description": {
-    "en": "The voltage source supplies voltage to the circuit. For case 2, activate the voltage source and set the desired voltage value by varying the slider.\n\nRating: 10V DC."
+    "en": "The DC power supply energizes the circuit for the short-circuit-current and load-current measurements. Switch it on only after the connections have been checked.\n\nRating: 10 V DC."
   },
   "audio": "/ai-guide-audio/Voltage Source.wav",
   "placement": "left"
@@ -171,7 +171,7 @@
         "en": "Observation Table"
       },
       "description": {
-        "en": "This table displays the measured branch currents I1, I2, and I3 for all three cases. These readings are used later in the calculation panel."
+        "en": "This table records the supply voltage, short-circuit current, Norton resistance, load current, and load resistance used for verification."
       },
       "audio": "/ai-guide-audio/Observation Table.wav",
       "placement": "right"
@@ -183,7 +183,7 @@
     "en": "Equations"
   },
   "description": {
-    "en": "This section displays the equations used to determine the branch currents."
+    "en": "This section displays the equations used for the Norton equivalent and load-current calculation."
   },
   "audio": "/ai-guide-audio/equations.wav",
   "placement": "top"
@@ -195,19 +195,31 @@
         "en": "Calculation Panel"
       },
       "description": {
-        "en": "This is the Calculation Panel where the Superposition Theorem will be verified. Enter the calculated values and compare the calculated and observed branch currents to verify the theorem."
+        "en": "Use the calculation panel to calculate the load current from the measured Norton current and resistance, then compare it with the observed load current."
       },
       "audio": "/ai-guide-audio/Calculation Panel.wav",
       "placement": "top"
     },
     {
       "id": 18,
+      "target": "#norton-verify-button",
+      "title": {
+        "en": "Verify button"
+      },
+      "description": {
+        "en": "After entering the Norton current and resistance values, click VERIFY to compare the calculated load current with the observed load current."
+      },
+      "audio": "/ai-guide-audio/Calculation Panel.wav",
+      "placement": "top"
+    },
+    {
+      "id": 19,
       "target": "#generate-report-button",
       "title": {
         "en": "Generate Report button"
       },
       "description": {
-        "en": "The Report button generates a summarised report of the simulation. After completing the observation table and calculation verification, generate the report. The report will include the time taken to complete the simulation, the apparatus used, recorded readings, user calculations, verification status, and conclusion of the simulation."
+        "en": "After completing the measurements and verifying the Norton load-current calculation, use this button to generate the experiment report."
       },
       "audio": "/ai-guide-audio/Generate Reportw.wav",
       "placement": "top"

@@ -1,4 +1,5 @@
 import multimeterImg from '../assets/DigitalMultimeter.png'
+import multimeterKnobImg from '../assets/knob.png'
 
 const formatDisplayValue = (value, mode) => {
   if (
@@ -55,6 +56,13 @@ const DigitalMultimeter = ({
         src={multimeterImg}
         alt="Digital multimeter set to resistance mode"
         className="digital-multimeter__image"
+      />
+
+      <img
+        src={multimeterKnobImg}
+        alt=""
+        aria-hidden="true"
+        className="digital-multimeter__knob"
       />
 
       <div

@@ -7,7 +7,6 @@ import WalkthroughPopup from './WalkthroughPopup.jsx'
 const WalkthroughOverlay = () => {
   const {
   activeStep,
-  autoPlayAudioForStep,
   canGoNext,
   canGoPrevious,
   close,
@@ -19,7 +18,7 @@ const WalkthroughOverlay = () => {
   targetRect,
   totalSteps,
   isAudioPlaying,
-  skipToLastStep,
+  skip,
   toggleStepAudio,
 } = useWalkthrough()
   return (
@@ -36,10 +35,9 @@ const WalkthroughOverlay = () => {
           <div aria-hidden="true" className="walkthrough-interaction-shield" />
           <Spotlight rect={isPositioningTarget ? null : targetRect} />
           <AnimatePresence mode="wait">
-            {!isPositioningTarget && targetRect ? (
+            {!isPositioningTarget ? (
               <WalkthroughPopup
                 activeStep={activeStep}
-                autoPlayAudio={autoPlayAudioForStep}
                 canGoNext={canGoNext}
                 canGoPrevious={canGoPrevious}
                 currentStep={currentStep}
@@ -50,7 +48,7 @@ const WalkthroughOverlay = () => {
                 targetRect={targetRect}
                 totalSteps={totalSteps}
                 isAudioPlaying={isAudioPlaying}
-  onSkip={skipToLastStep}
+  onSkip={skip}
   onToggleAudio={toggleStepAudio}
               />
             ) : null}

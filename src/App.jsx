@@ -205,11 +205,6 @@ const AI_GUIDE_AUDIO_OWNER = 'ai-guide'
 }
 const BASE_WIDTH = 1440
 const BASE_HEIGHT = 960
-const GRAPH_SECTION_GAP = 28
-const GRAPH_SECTION_HEIGHT = 1100
-const CONTENT_HEIGHT = BASE_HEIGHT + GRAPH_SECTION_GAP + GRAPH_SECTION_HEIGHT
-const PANEL_MAX_SCALE = 1
-const PANEL_VIEWPORT_MARGIN = 10
 const MIN_GRAPH_READINGS = 1
 const MAX_OBSERVATIONS = 10
 const VOLTAGE_SAFETY_LIMIT = 8.5
@@ -282,15 +277,16 @@ const getScale = () => {
     return 1
   }
 
-  const availableWidth = window.innerWidth - PANEL_VIEWPORT_MARGIN
-  const availableHeight = window.innerHeight - PANEL_VIEWPORT_MARGIN
+  const availableWidth = document.documentElement.clientWidth
 
-  const widthScale = availableWidth / BASE_WIDTH
-  const heightScale = availableHeight / BASE_HEIGHT
-
+  /*
+   * Fit the board by width only. Including the viewport height here makes the
+   * entire experiment unnecessarily small (and its raster equipment blurry)
+   * on laptop screens. Never enlarge it past its native 1440 px canvas.
+   */
   return Math.max(
-    Math.min(widthScale, heightScale, PANEL_MAX_SCALE),
-    0.1
+    Math.min(availableWidth / BASE_WIDTH, 1),
+    0.1,
   )
 }
 const formatNode = (nodeId) => (
@@ -364,6 +360,8 @@ const App = () => {
   const currentCase = getNortonConnectionCase(observations)
   const requiredConnections = NORTON_CONNECTIONS[currentCase]
   const [scale, setScale] = useState(getScale)
+  const [contentHeight, setContentHeight] = useState(BASE_HEIGHT)
+  const appScaleRef = useRef(null)
   const [r1, setR1] = useState(1)
   const [r2, setR2] = useState(1)
   const [r3, setR3] = useState(1)
@@ -460,6 +458,30 @@ useEffect(() => {
     window.addEventListener('resize', handleResize)
 
     return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  useEffect(() => {
+    const appScale = appScaleRef.current
+
+    if (!appScale) return undefined
+
+    const measureContent = () => {
+      const nextHeight = Math.max(
+        BASE_HEIGHT,
+        Math.ceil(appScale.scrollHeight),
+      )
+
+      setContentHeight((currentHeight) => (
+        currentHeight === nextHeight ? currentHeight : nextHeight
+      ))
+    }
+
+    measureContent()
+
+    const resizeObserver = new ResizeObserver(measureContent)
+    resizeObserver.observe(appScale)
+
+    return () => resizeObserver.disconnect()
   }, [])
   /*useEffect(() => {
   const handleComplete = () => {
@@ -1351,7 +1373,7 @@ const handleWalkthroughComplete = () => {
 }
 
   const scaledWidth = Math.ceil(BASE_WIDTH * scale)
-  const scaledHeight = Math.ceil(CONTENT_HEIGHT * scale)
+  const scaledHeight = Math.ceil(contentHeight * scale)
   const handleConnectionChange = (connectionCount) => {
   setConnectionsVerified(false)
 
@@ -1882,8 +1904,8 @@ observations.loadCurrent === null
       >
         <div
           id="app-scale"
+          ref={appScaleRef}
           style={{
-            height: `${CONTENT_HEIGHT}px`,
             transform: `scale(${scale})`,
           }}
         >

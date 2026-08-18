@@ -6,8 +6,8 @@ import { useFocusTrap } from '../hooks/useFocusTrap.js'
 const EDGE_GAP = 16
 const TARGET_GAP = 18
 const DEFAULT_POPUP_SIZE = {
-  height: 280,
-  width: 360,
+  height: 322,
+  width: 450,
 }
 
 const isValidAudioSource = (audio) => Boolean(audio && audio !== '#')
@@ -91,7 +91,6 @@ const getPopupPosition = (rect, size, preferredPlacement) => {
 
 const WalkthroughPopup = ({
   activeStep,
-  autoPlayAudio,
   canGoNext,
   canGoPrevious,
   currentStep,
@@ -210,16 +209,6 @@ onToggleAudio,
           <p className="walkthrough-popup__eyebrow">Guided Walkthrough</p>
           <h2 id={titleId}>{activeStep.title}</h2>
         </div>
-
-        <button
-  aria-label="Skip walkthrough"
-  className="walkthrough-popup__icon-button"
-  onClick={isLastStep ? undefined : onSkip}
-  disabled={isLastStep}
-  type="button"
->
-    <span aria-hidden="true">&times;</span>
-</button>
       </div>
 
       <p className="walkthrough-popup__description" id={descriptionId}>

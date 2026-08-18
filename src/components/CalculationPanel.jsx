@@ -584,6 +584,7 @@ const handleVerify = () => {
       <div className="norton-verification-section">
 
         <button
+          id="norton-verify-button"
           type="button"
           className="norton-verify-btn"
           onClick={handleVerify}
