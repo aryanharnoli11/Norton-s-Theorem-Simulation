@@ -39,6 +39,7 @@ const getNortonCase = (observations = {}) => {
 const ConnectionLab = ({
   autoConnectRequest,
   checkRequest,
+  onAutoConnectComplete,
   onCheckConnections,
 
   powerOn,
@@ -86,6 +87,9 @@ const ConnectionLab = ({
 
   const onCheckConnectionsRef =
     useRef(onCheckConnections)
+
+  const onAutoConnectCompleteRef =
+    useRef(onAutoConnectComplete)
 
   const scaleRef =
     useRef(getJsPlumbZoom(scale))
@@ -164,7 +168,10 @@ useEffect(() => {
   useEffect(() => {
     onCheckConnectionsRef.current =
       onCheckConnections
-  }, [onCheckConnections])
+
+    onAutoConnectCompleteRef.current =
+      onAutoConnectComplete
+  }, [onAutoConnectComplete, onCheckConnections])
 
   useEffect(() => {
     let cancelled = false
@@ -430,12 +437,16 @@ useEffect(() => {
     return undefined
   }
 
+  let completionTimer = null
+
   const timer = window.setTimeout(() => {
     const instance = instanceRef.current
 
     if (!instance) {
       return
     }
+
+    let didConnect = true
 
     switch (caseToConnect) {
       case 'rn':
@@ -451,15 +462,34 @@ useEffect(() => {
         break
 
       default:
+        didConnect = false
         console.warn(
           'Unknown Norton auto-connect case:',
           caseToConnect,
         )
     }
+
+    if (!didConnect) {
+      return
+    }
+
+    /* Run after jsPlumb's connection-count notifications have settled. */
+    completionTimer = window.setTimeout(() => {
+      const result = validateNortonConnections(
+        instance,
+        caseToConnect,
+      )
+
+      onAutoConnectCompleteRef.current?.({
+        ...result,
+        caseKey: caseToConnect,
+      })
+    }, 0)
   }, 150)
 
   return () => {
     window.clearTimeout(timer)
+    window.clearTimeout(completionTimer)
   }
 }, [autoConnectRequest])
 

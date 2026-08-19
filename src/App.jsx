@@ -251,6 +251,37 @@ const NORTON_STAGES = {
   VERIFIED: 'verified',
 }
 
+const NORTON_ALERT_MESSAGES = {
+  resistanceRequired:
+    'Please set R1, R2, R3 and RL using the resistance sliders.',
+  connectionsRequired:
+    'Please make the required connections as per the given instructions.',
+  rnAutoConnected:
+    'The digital multimeter is now displaying the Norton resistance value. Now, click on the add button to add the readings to the observation table.',
+  rnVerified:
+    'Connections Verified successfully. The digital multimeter is now displaying the Norton resistance value. Now, click on the add button to add the readings to the observation table.',
+  iscAutoConnected:
+    'Now switch ON the power supply and set the required voltage value.',
+  iscVerified:
+    'Connections Verified successfully. Now switch ON the power supply and set the required voltage value.',
+  iscReadingDisplayed:
+    'The reading is displayed on the ammeter. Now, click on the add button to add the reading to the observation table.',
+  ilAutoConnected:
+    'Now turn ON the power supply.',
+  ilVerified:
+    'Connections verified successfully. Now turn ON the power supply.',
+  ilReadingDisplayed:
+    'The reading is displayed on an ammeter. Now, click on the add button to add the reading to the observation table.',
+  finalReadingAdded:
+    'Final reading added to the observation table. Now, click on the Calculate button to manually verify the theorem.',
+  calculationReady:
+    'The resistance and source values are displayed in the theoretical verification panel. Calculate the load current manually using the rules of the Norton Theorem, enter the calculated values in the input field, and click the Verify button to verify the theorem.',
+  reportGenerated:
+    'Your report has been generated successfully. Click OK to view your report.',
+  simulationReset:
+    'The simulation has been reset. You can start again.',
+}
+
 const getNortonConnectionCase = (observations = {}) => {
   if (observations.nortonResistance === null) {
     return 'rn'
@@ -395,6 +426,7 @@ const [highlightWalkthrough, setHighlightWalkthrough] = useState(false)
 const touchedResistorsRef = useRef(new Set())
 const lastInstructionAudioRef = useRef('')
 const aiGuideJustEnabledRef = useRef(false)
+const iscReadingAlertShownRef = useRef(false)
 
 const [lockedVoltage, setLockedVoltage] = useState(null)
   
@@ -926,6 +958,7 @@ const canAddReading =
 
     setConnectionsVerified(false)
     setConnectionsLocked(false)
+    iscReadingAlertShownRef.current = false
 
     setInstructionStep(
       'rn-remove-connections',
@@ -1093,13 +1126,13 @@ const canAddReading =
     )
 
     showAlertWithOptionalAudio({
-      title: 'Load Current Added',
+      title: 'Final Reading Added',
       description:
-        'IL has been recorded successfully. Click CALCULATE to continue.',
+        NORTON_ALERT_MESSAGES.finalReadingAdded,
       type: 'success',
       icon: '✅',
       target: '#calculate-button',
-    })
+    }, AI_GUIDE_AUDIO.afterReadingCase3)
   }
 }
 
@@ -1166,6 +1199,7 @@ setConnectionsLocked(false)
   setSessionStart(Date.now())
 
   touchedResistorsRef.current.clear()
+  iscReadingAlertShownRef.current = false
 
   setLockedConnections({
     ammeter: false,
@@ -1183,7 +1217,7 @@ setConnectionsLocked(false)
     {
       title: 'Simulation Reset',
       description:
-        'The simulation has been reset. You can start again.',
+        NORTON_ALERT_MESSAGES.simulationReset,
       type: 'success',
     },
     AI_GUIDE_AUDIO.reset,
@@ -1271,9 +1305,9 @@ const handleCalculate = () => {
 
     showAlertWithOptionalAudio(
       {
-        title: 'Calculation Panel Updated',
+        title: 'Theoretical Verification Panel Updated',
         description:
-          'The observed branch currents are displayed in the Calculation Panel. Calculate the branch currents manually using the Superposition Theorem, enter the calculated values in the input fields, and click the Verify button to verify the theorem.',
+          NORTON_ALERT_MESSAGES.calculationReady,
         type: 'info',
         icon: 'ℹ️',
         dedupeKey: `calculate-alert-${Date.now()}`,
@@ -1363,9 +1397,9 @@ const handleWalkthroughComplete = () => {
   )
 }
   const confirmed = await confirmAlert({
-    title: 'Report Generated Successfully',
+    title: 'Generate Report',
     description:
-      'Your report has been generated successfully. Click OK to view your report.',
+      NORTON_ALERT_MESSAGES.reportGenerated,
     type: 'success',
     icon: '📄',
   })
@@ -1494,6 +1528,8 @@ const handleConnectionDetached = (
         result.rawConnections ||
         []
 
+      const hasConnections = actualConnections.length > 0
+
       const description =
         buildConnectionAlertDescription(
           actualConnections,
@@ -1501,11 +1537,14 @@ const handleConnectionDetached = (
         )
 
       showAlertWithOptionalAudio({
-        title: 'Invalid Connections',
+        title: hasConnections
+          ? 'Invalid Connections'
+          : 'Connections Required',
         description:
-          description ||
-          'One or more connections are incorrect or missing.',
-        type: 'error',
+          hasConnections
+            ? description || 'One or more connections are incorrect or missing.'
+            : NORTON_ALERT_MESSAGES.connectionsRequired,
+        type: hasConnections ? 'error' : 'warning',
         icon: '❌',
         target: '#circuit-panel',
       })
@@ -1530,12 +1569,12 @@ const handleConnectionDetached = (
       )
 
       showAlertWithOptionalAudio({
-        title: 'Right Connections',
+        title: 'Connections Verified',
         description:
-          'The connections for measuring Norton resistance are correct. Keep the power supply OFF and click ADD.',
+          NORTON_ALERT_MESSAGES.rnVerified,
         type: 'success',
         icon: '✅',
-        target: '#check-button',
+        target: '#digital-multimeter',
       })
 
       return
@@ -1551,12 +1590,12 @@ const handleConnectionDetached = (
       )
 
       showAlertWithOptionalAudio({
-        title: 'Right Connections',
+        title: 'Connections Verified',
         description:
-          'The short-circuit current connections are correct. Turn ON the power supply and set the voltage.',
+          NORTON_ALERT_MESSAGES.iscVerified,
         type: 'success',
         icon: '✅',
-        target: '#check-button',
+        target: '#power-supply',
       })
 
       return
@@ -1576,14 +1615,14 @@ const handleConnectionDetached = (
       )
 
       showAlertWithOptionalAudio({
-        title: 'Right Connections',
+        title: 'Connections Verified',
         description:
           powerOn
-            ? 'The load-current connections are correct. Click ADD to record IL.'
-            : 'The load-current connections are correct. Turn ON the power supply and use the same voltage used for Isc.',
+            ? NORTON_ALERT_MESSAGES.ilReadingDisplayed
+            : NORTON_ALERT_MESSAGES.ilVerified,
         type: 'success',
         icon: '✅',
-        target: '#check-button',
+        target: powerOn ? '#ammeter-a' : '#power-supply',
       })
     }
   },
@@ -1596,13 +1635,13 @@ const handleConnectionDetached = (
   const handleCheck = () => {
   if (!resistanceSet) {
     showAlertWithOptionalAudio({
-      title: 'Set Resistance Values First',
+      title: 'Set Resistance Values',
       description:
-        'Set R1, R2, R3 and RL before checking the circuit.',
+        NORTON_ALERT_MESSAGES.resistanceRequired,
       type: 'warning',
       icon: '⚠️',
       target: '#resistance-controls',
-    })
+    }, AI_GUIDE_AUDIO.beforeResistance)
 
     return
   }
@@ -1747,6 +1786,24 @@ setStatus('Current source switched on. Adjust current and add the reading.')
     setInstructionStep(
   'isc-remove-connection',
 )
+
+    if (
+      Number(voltage) > 0 &&
+      !iscReadingAlertShownRef.current
+    ) {
+      iscReadingAlertShownRef.current = true
+
+      showAlertWithOptionalAudio(
+        {
+          title: 'Reading Displayed',
+          description:
+            NORTON_ALERT_MESSAGES.iscReadingDisplayed,
+          type: 'success',
+          target: '#ammeter-a',
+        },
+        AI_GUIDE_AUDIO.voltageValueSet,
+      )
+    }
   }
 
   if (currentCase === 'il') {
@@ -1755,18 +1812,105 @@ setStatus('Current source switched on. Adjust current and add the reading.')
     setStatus(
       'Power supply switched ON. Use the same voltage and click ADD to record IL.',
     )
+
+    showAlertWithOptionalAudio(
+      {
+        title: 'Reading Displayed',
+        description:
+          NORTON_ALERT_MESSAGES.ilReadingDisplayed,
+        type: 'success',
+        target: '#ammeter-a',
+      },
+      AI_GUIDE_AUDIO.bothSourcesOn,
+    )
   }
 }
+
+const handleAutoConnectComplete = useCallback((result) => {
+  if (!result?.isCorrect) {
+    setConnectionsVerified(false)
+    setConnectionsLocked(false)
+
+    showAlertWithOptionalAudio({
+      title: 'Auto Connect Failed',
+      description:
+        'The required connections could not be completed. Please try Auto Connect again.',
+      type: 'error',
+      target: '#circuit-panel',
+    })
+
+    return
+  }
+
+  setConnectionsVerified(true)
+  setConnectionsLocked(true)
+
+  if (result.caseKey === 'rn') {
+    setInstructionStep('rn-add-reading')
+    setStatus(
+      'Case 1 auto-connect completed. The Norton resistance is displayed; click ADD.',
+    )
+
+    showAlertWithOptionalAudio(
+      {
+        title: 'Autoconnect completed',
+        description: NORTON_ALERT_MESSAGES.rnAutoConnected,
+        type: 'success',
+        target: '#digital-multimeter',
+      },
+      AI_GUIDE_AUDIO.autoConnect,
+    )
+
+    return
+  }
+
+  if (result.caseKey === 'isc') {
+    iscReadingAlertShownRef.current = false
+    setInstructionStep('isc-power')
+    setStatus(
+      'Case 2 auto-connect completed. Turn ON the power supply and set the voltage.',
+    )
+
+    showAlertWithOptionalAudio(
+      {
+        title: 'Autoconnect completed',
+        description: NORTON_ALERT_MESSAGES.iscAutoConnected,
+        type: 'success',
+        target: '#power-supply',
+      },
+      AI_GUIDE_AUDIO.autoConnect,
+    )
+
+    return
+  }
+
+  if (result.caseKey === 'il') {
+    setInstructionStep('il-power')
+    setStatus(
+      'Case 3 auto-connect completed. Turn ON the power supply.',
+    )
+
+    showAlertWithOptionalAudio(
+      {
+        title: 'Autoconnect completed',
+        description: NORTON_ALERT_MESSAGES.ilAutoConnected,
+        type: 'success',
+        target: '#power-supply',
+      },
+      AI_GUIDE_AUDIO.autoConnect,
+    )
+  }
+}, [showAlertWithOptionalAudio])
 
   const handleAutoConnect = () => {
   if (!resistanceSet) {
     showAlertWithOptionalAudio({
-      title: 'Set Resistance Values First',
+      title: 'Set Resistance Values',
       description:
-        'Set R1, R2, R3 and RL before using Auto Connect.',
+        NORTON_ALERT_MESSAGES.resistanceRequired,
       type: 'warning',
       target: '#resistance-controls',
-    })
+    }, AI_GUIDE_AUDIO.beforeResistance)
 
     return
   }
@@ -1821,18 +1965,6 @@ setStatus('Current source switched on. Adjust current and add the reading.')
     caseKey: currentCase,
   }))
 
-  showAlertWithOptionalAudio(
-    {
-      dedupeKey:
-        `norton-auto-connect-${currentCase}-${Date.now()}`,
-      title: 'Auto Connections Completed',
-      description:
-        `${descriptionByCase[currentCase]} has been connected. Click CHECK to verify it.`,
-      type: 'success',
-      target: '#circuit-panel',
-    },
-    AI_GUIDE_AUDIO.autoConnect,
-  )
 }
 
   const handleVoltageChange = useCallback((nextVoltage) => {
@@ -1846,6 +1978,25 @@ setStatus('Current source switched on. Adjust current and add the reading.')
       return
     }
 
+    if (
+      currentCase === 'isc' &&
+      connectionsVerified &&
+      !iscReadingAlertShownRef.current
+    ) {
+      iscReadingAlertShownRef.current = true
+
+      showAlertWithOptionalAudio(
+        {
+          title: 'Reading Displayed',
+          description:
+            NORTON_ALERT_MESSAGES.iscReadingDisplayed,
+          type: 'success',
+          target: '#ammeter-a',
+        },
+        AI_GUIDE_AUDIO.voltageValueSet,
+      )
+    }
+
     /*if (nextVoltage >= VOLTAGE_SAFETY_LIMIT && !voltageLimitWarningShownRef.current) {
       voltageLimitWarningShownRef.current = true
       showStepAlert(EXPERIMENT_ALERTS.voltageSafetyLimit, {
@@ -1857,7 +2008,12 @@ setStatus('Current source switched on. Adjust current and add the reading.')
     if (nextVoltage < VOLTAGE_SAFETY_RESET) {
       voltageLimitWarningShownRef.current = false
     }
-  }, [powerOn, showStepAlert])
+  }, [
+    connectionsVerified,
+    currentCase,
+    powerOn,
+    showAlertWithOptionalAudio,
+  ])
 
   return (
     <div id="app-wrapper">
@@ -1899,8 +2055,7 @@ setStatus('Current source switched on. Adjust current and add the reading.')
     readingCount >= 3,
   
   onCheck:
-    (powerOn && currentCase !== 'il') ||
-    connectionsLocked,
+    powerOn && currentCase !== 'il',
 
   onAdd:
     !canAddReading,
@@ -1946,9 +2101,10 @@ setR3={(value) => handleResistanceChange('r3', setR3, value)}
               </aside>
 
               <section className="right-panel">
-                <ConnectionLab
+<ConnectionLab
   autoConnectRequest={autoConnectRequest}
   checkRequest={checkRequest}
+  onAutoConnectComplete={handleAutoConnectComplete}
   onCheckConnections={handleCheckConnections}
 
   powerOn={powerOn}
@@ -1973,7 +2129,7 @@ setR3={(value) => handleResistanceChange('r3', setR3, value)}
   scale={scale}
 
   onTogglePower={handleTogglePower}
-  setVoltage={setVoltage}
+  setVoltage={handleVoltageChange}
   voltage={voltage}
 
   lockedVoltage={Boolean(lockedVoltage)}
