@@ -11,12 +11,28 @@ import {
   resumeSharedAudio,
   stopSharedAudio,
 } from '../utils/audioController.js'
+import {
+  acquirePageScrollLock,
+  releasePageScrollLock,
+} from '../utils/pageScrollLock.js'
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max)
 const WALKTHROUGH_AUDIO_OWNER = 'walkthrough'
+const WALKTHROUGH_SCROLL_LOCK = 'walkthrough'
+
+const resetExperimentScroll = () => {
+  document.querySelectorAll('.simulation-shell').forEach((element) => {
+    element.scrollLeft = 0
+    element.scrollTop = 0
+  })
+}
 
 const scrollPageToTop = () => {
   const resetScroll = () => {
+    const scrollRoot = document.scrollingElement
+
+    resetExperimentScroll()
+
     window.scrollTo({
       behavior: 'auto',
       left: 0,
@@ -24,15 +40,42 @@ const scrollPageToTop = () => {
     })
 
     /* Fallbacks for browsers that use either element as the scroll root. */
+    if (scrollRoot) {
+      scrollRoot.scrollTop = 0
+    }
+
     document.documentElement.scrollTop = 0
     document.body.scrollTop = 0
   }
 
   resetScroll()
 
-  /* The body scroll lock is released after React commits the closed overlay. */
+  /* Repeat after the overlay has unmounted and the scaled page has reflowed. */
+  window.setTimeout(resetScroll, 0)
   window.requestAnimationFrame(() => {
+    resetScroll()
     window.requestAnimationFrame(resetScroll)
+  })
+}
+
+const scrollTargetIntoViewport = (target) => {
+  /*
+   * scrollIntoView also scrolls overflow:hidden ancestors. The experiment
+   * shell is one of those ancestors, so it can become invisibly offset.
+   */
+  resetExperimentScroll()
+
+  const rect = target.getBoundingClientRect()
+  const centeredTop = (
+    window.scrollY
+    + rect.top
+    - ((window.innerHeight - rect.height) / 2)
+  )
+
+  window.scrollTo({
+    behavior: 'auto',
+    left: 0,
+    top: Math.max(0, centeredTop),
   })
 }
 
@@ -124,6 +167,8 @@ const [isAudioPlaying, setIsAudioPlaying] = useState(false)
  const close = useCallback((completed = false) => {
   stopAudio('walkthrough-close')
 
+  /* Unlock synchronously; effect cleanup otherwise runs after this callback. */
+  releasePageScrollLock(WALKTHROUGH_SCROLL_LOCK)
   setIsOpen(false)
   setIsPositioningTarget(false)
   setTargetRect(null)
@@ -247,11 +292,9 @@ useEffect(() => {
 
   const target = document.querySelector(activeTargetSelector)
 
-  target?.scrollIntoView({
-    behavior: 'auto',
-    block: 'center',
-    inline: 'center',
-  })
+  if (target) {
+    scrollTargetIntoViewport(target)
+  }
 
   let secondAnimationFrame = null
 
@@ -319,30 +362,28 @@ useEffect(() => {
  
 useEffect(() => {
   if (!isOpen) {
-    document.body.style.overflow = ''
     return undefined
   }
 
-  document.body.style.overflow = 'hidden'
+  acquirePageScrollLock(WALKTHROUGH_SCROLL_LOCK)
 
   return () => {
-    document.body.style.overflow = ''
+    releasePageScrollLock(WALKTHROUGH_SCROLL_LOCK)
   }
 }, [isOpen])
 useEffect(() => {
   if (!isOpen) {
-    stopAudio('walkthrough-closed')
     return undefined
   }
 
   if (!activeStep?.audio) {
-    stopAudio('walkthrough-step-has-no-audio')
     return undefined
   }
 
-  playStepAudio()
+  const animationFrame = window.requestAnimationFrame(playStepAudio)
 
   return () => {
+    window.cancelAnimationFrame(animationFrame)
     stopAudio('walkthrough-step-cleanup')
   }
 }, [

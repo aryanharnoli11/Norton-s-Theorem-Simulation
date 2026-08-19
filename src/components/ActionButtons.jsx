@@ -507,8 +507,7 @@ useEffect(() => {
 
       <div className="instruction-formula">
         I<sub>L</sub> =
-        I<sub>SC</sub> &times;
-        R<sub>N</sub> /
+        I<sub>N</sub> /
         (
         R<sub>N</sub> +
         R<sub>L</sub>

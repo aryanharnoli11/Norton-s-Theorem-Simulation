@@ -17,7 +17,7 @@ const formatDisplayValue = (value, mode) => {
   }
 
   if (mode === 'resistance') {
-    return `${numericValue.toFixed(2)} Ω`
+    return `${(numericValue / 1000).toFixed(2)} kΩ`
   }
 
   return numericValue.toFixed(3)
@@ -54,7 +54,11 @@ const DigitalMultimeter = ({
     >
       <img
         src={multimeterImg}
-        alt="Digital multimeter set to resistance mode"
+        alt={
+          active
+            ? 'Digital multimeter set to the 20 kiloohm range'
+            : 'Digital multimeter set to OFF'
+        }
         className="digital-multimeter__image"
       />
 

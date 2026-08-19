@@ -112,16 +112,9 @@ const calculatedLoadCurrent = useMemo(() => {
     return null
   }
 
-  // Norton formula:
-  // IL = IN × RN / (RN + RL)
-
-  return (
-    enteredIn *
-    (
-      enteredRn /
-      denominator
-    )
-  )
+  // Values are entered in mA and kΩ.
+  // Required formula: IL = IN / (RN + RL)
+  return enteredIn / denominator
 }, [
   enteredIn,
   enteredRn,
@@ -452,8 +445,8 @@ const handleVerify = () => {
         <label className="norton-equation-term norton-equation-numerator">
 
           
-          <span className="norton-equation-multiply">
-             R<sub>N</sub>
+          <span>
+            I<sub>N</sub>
           </span>
 
           <input

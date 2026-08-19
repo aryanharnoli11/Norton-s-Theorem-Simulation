@@ -4,6 +4,10 @@ import { LabAlertContext } from './LabAlertContext.js'
 import LabAlertCard from './LabAlertCard.jsx'
 import LabAlertSpotlight from './LabAlertSpotlight.jsx'
 import './labAlerts.css'
+import {
+  acquirePageScrollLock,
+  releasePageScrollLock,
+} from '../utils/pageScrollLock.js'
 
 const DEFAULT_DURATIONS = {
   error: 6500,
@@ -11,6 +15,8 @@ const DEFAULT_DURATIONS = {
   success: 3800,
   warning: 5600,
 }
+
+const LAB_ALERT_SCROLL_LOCK = 'lab-alert'
 
 const DEFAULT_ICONS = {
   error: '❌',
@@ -190,20 +196,14 @@ const LabAlertProvider = ({ children }) => {
 
   const { centerAlert, topRightAlerts } = alertState
   useEffect(() => {
-  const previousBodyOverflow = document.body.style.overflow
-  const previousHtmlOverflow = document.documentElement.style.overflow
-
-  if (centerAlert) {
-    document.body.style.overflow = 'hidden'
-    document.documentElement.style.overflow = 'hidden'
-  } else {
-    document.body.style.overflow = previousBodyOverflow
-    document.documentElement.style.overflow = previousHtmlOverflow
+  if (!centerAlert) {
+    return undefined
   }
 
+  acquirePageScrollLock(LAB_ALERT_SCROLL_LOCK)
+
   return () => {
-    document.body.style.overflow = previousBodyOverflow
-    document.documentElement.style.overflow = previousHtmlOverflow
+    releasePageScrollLock(LAB_ALERT_SCROLL_LOCK)
   }
 }, [centerAlert])
   const spotlightAlert = centerAlert ?? topRightAlerts.at(-1)

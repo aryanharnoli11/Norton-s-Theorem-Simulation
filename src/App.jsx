@@ -385,8 +385,6 @@ const [manualGuideCase, setManualGuideCase] = useState(null)
 const [manualGuideIndex, setManualGuideIndex] = useState(0)
 const manualGuideCaseRef = useRef(null)
 const manualGuideIndexRef = useRef(0)
-const autoConnectingRef = useRef(false)
-const autoConnectReleaseTimerRef = useRef(null)
 const autoConnectFeedbackPlayedRef = useRef(false)
 const lastGuideMessageRef = useRef('')
 const resistanceGuideTimerRef = useRef(null)
@@ -422,7 +420,10 @@ const currentAudioPathRef = useRef('')
   const [reportGenerated, setReportGenerated] = useState(false)
   const [status, setStatus] = useState('Make the connections, click CHECK, then set the resistance values.')
 
-  const [autoConnectRequest, setAutoConnectRequest] = useState(0)
+  const [autoConnectRequest, setAutoConnectRequest] = useState({
+    id: 0,
+    caseKey: null,
+  })
   const [checkRequest, setCheckRequest] = useState(0)
   const [resetRequest, setResetRequest] = useState(0)
   const [pendingReportData, setPendingReportData] = useState(null)
@@ -809,13 +810,6 @@ useEffect(() => {
     )
   }
 }, [aiGuideEnabled, playAiGuideAudio])
-useEffect(() => {
-  return () => {
-    window.clearTimeout(
-      autoConnectReleaseTimerRef.current,
-    )
-  }
-}, [])
 const showGuideAlert = useCallback((key, audioPath) => {
   if (!aiGuideEnabled || !audioPath) return
 
@@ -867,6 +861,7 @@ const isCase3InProgress = (
 const canPlotGraph = readingCount >= 3
 
 const canAddReading =
+  readingCount < 3 &&
   connectionsVerified &&
   connectionsLocked &&
   (
@@ -877,6 +872,18 @@ const canAddReading =
   )
 
   const recordObservation = () => {
+  if (readingCount >= 3) {
+    showAlertWithOptionalAudio({
+      title: 'Experiment Already Completed',
+      description:
+        'All three case readings have already been added. Click CALCULATE to continue.',
+      type: 'info',
+      target: '#calculate-button',
+    })
+
+    return
+  }
+
   if (!connectionsVerified) {
     showAlertWithOptionalAudio({
       title: 'Check Connections First',
@@ -988,19 +995,20 @@ const canAddReading =
 
     setConnectionsVerified(false)
     setConnectionsLocked(false)
+    setPowerOn(false)
 
     setInstructionStep(
       'isc-remove-connection',
     )
 
     setStatus(
-      'Isc reading saved. Remove only connection 2–11.',
+      'Isc reading saved and the power supply switched OFF. Remove connection 2–11 or use AUTO CONNECT for Case 3.',
     )
 
     showAlertWithOptionalAudio({
       title: 'Short-Circuit Current Added',
       description:
-        'Isc has been recorded. Remove only connection 2–11 before making the load-current connections.',
+        'Isc has been recorded and the power supply is OFF. Remove only connection 2–11 or use AUTO CONNECT for the Case 3 load-current wiring.',
       type: 'success',
       icon: '✅',
       target: '#observation-table-panel',
@@ -1098,12 +1106,6 @@ const canAddReading =
   const resetSimulation = useCallback(() => {
   setInstructionStep('reset')
 
-  autoConnectingRef.current = false
-
-  window.clearTimeout(
-    autoConnectReleaseTimerRef.current,
-  )
-
   window.clearTimeout(
     resistanceGuideTimerRef.current,
   )
@@ -1150,7 +1152,10 @@ setConnectionsLocked(false)
   setReportGenerated(false)
   setCalculationsVerified(false)
 
-  setAutoConnectRequest(0)
+  setAutoConnectRequest({
+    id: 0,
+    caseKey: null,
+  })
   setCheckRequest(0)
   setConnectionsVerified(false)
 
@@ -1237,6 +1242,18 @@ playGuideAudio(
   window.print()
 }
 const handleCalculate = () => {
+  if (readingCount < 3) {
+    showAlertWithOptionalAudio({
+      title: 'Complete All Three Cases',
+      description:
+        'Add the Case 1, Case 2 and Case 3 readings before calculating.',
+      type: 'warning',
+      target: '#observation-table-panel',
+    })
+
+    return
+  }
+
   stopAiGuideAudio()
 
   setAutoFillTrigger((prev) => prev + 1)
@@ -1376,10 +1393,6 @@ const handleWalkthroughComplete = () => {
   const scaledHeight = Math.ceil(contentHeight * scale)
   const handleConnectionChange = (connectionCount) => {
   setConnectionsVerified(false)
-
-  if (autoConnectingRef.current) {
-    return
-  }
 
   setStatus(
     connectionCount > 0
@@ -1551,17 +1564,23 @@ const handleConnectionDetached = (
 
     if (result.caseKey === 'il') {
       setInstructionStep(
-        'il-power',
+        powerOn
+          ? 'il-add-reading'
+          : 'il-power',
       )
 
       setStatus(
-        'IL connections verified. Turn ON the power supply and use the same voltage.',
+        powerOn
+          ? 'IL connections verified. Click ADD to record the load current.'
+          : 'IL connections verified. Turn ON the power supply and use the same voltage.',
       )
 
       showAlertWithOptionalAudio({
         title: 'Right Connections',
         description:
-          'The load-current connections are correct. Turn ON the power supply and use the same voltage used for Isc.',
+          powerOn
+            ? 'The load-current connections are correct. Click ADD to record IL.'
+            : 'The load-current connections are correct. Turn ON the power supply and use the same voltage used for Isc.',
         type: 'success',
         icon: '✅',
         target: '#check-button',
@@ -1569,6 +1588,7 @@ const handleConnectionDetached = (
     }
   },
   [
+    powerOn,
     showAlertWithOptionalAudio,
   ],
 )
@@ -1587,7 +1607,7 @@ const handleConnectionDetached = (
     return
   }
 
-  if (powerOn) {
+  if (powerOn && currentCase !== 'il') {
     showAlertWithOptionalAudio({
       title: 'Turn OFF the Power Supply',
       description:
@@ -1697,6 +1717,18 @@ setStatus('Current source switched on. Adjust current and add the reading.')
     return
   }
 
+  if (!powerOn && !connectionsVerified) {
+    showStepAlert({
+      title: 'Check Connections First',
+      description:
+        'Verify the current case connections before switching ON the power supply.',
+      type: 'warning',
+      target: '#check-button',
+    })
+
+    return
+  }
+
   const nextPowerOn = !powerOn
 
   setPowerOn(nextPowerOn)
@@ -1729,14 +1761,10 @@ setStatus('Current source switched on. Adjust current and add the reading.')
   const handleAutoConnect = () => {
   if (!resistanceSet) {
     showAlertWithOptionalAudio({
-      title:
-        'Set Resistance Values First',
-
+      title: 'Set Resistance Values First',
       description:
         'Set R1, R2, R3 and RL before using Auto Connect.',
-
       type: 'warning',
-      icon: '⚠️',
       target: '#resistance-controls',
     })
 
@@ -1745,14 +1773,10 @@ setStatus('Current source switched on. Adjust current and add the reading.')
 
   if (powerOn) {
     showAlertWithOptionalAudio({
-      title:
-        'Turn OFF the Power Supply',
-
+      title: 'Turn OFF the Power Supply',
       description:
         'Switch OFF the power supply before automatically connecting the circuit.',
-
       type: 'warning',
-      icon: '⚠️',
       target: '#power-supply',
     })
 
@@ -1761,112 +1785,54 @@ setStatus('Current source switched on. Adjust current and add the reading.')
 
   if (connectionsLocked) {
     showAlertWithOptionalAudio({
-      title:
-        'Circuit Connections Locked',
-
+      title: 'Circuit Connections Locked',
       description:
         'Add the current case reading before changing the circuit connections.',
-
       type: 'warning',
-      icon: '🔒',
       target: '#circuit-panel',
     })
 
     return
   }
 
-  const caseKey =
-    getNortonConnectionCase(
-      observationsRef.current,
-    )
+  const instructionByCase = {
+    rn: 'rn-check',
+    isc: 'isc-check',
+    il: 'il-check',
+  }
 
-  autoConnectingRef.current = true
-
-  window.clearTimeout(
-    autoConnectReleaseTimerRef.current,
-  )
+  const descriptionByCase = {
+    rn: 'Case 1 wiring for Norton resistance',
+    isc: 'Case 2 wiring for short-circuit current',
+    il: 'Case 3 wiring for load current',
+  }
 
   setConnectionsVerified(false)
   setConnectionsLocked(false)
-
-  /*
-   * Instruction highlighting according
-   * to the current Norton case.
-   */
-  if (caseKey === 'rn') {
-    setInstructionStep(
-      'rn-check',
-    )
-
-    setStatus(
-      'Case 1 connections added automatically. Click CHECK to verify RN wiring.',
-    )
-    observations.nortonResistance !== null
-observations.shortCircuitCurrent === null
-  } else if (caseKey === 'isc') {
-    setInstructionStep(
-      'isc-check',
-    )
-
-    setStatus(
-      'Case 2 connections added automatically. Click CHECK to verify Isc wiring.',
-    )
-  } else {
-    setInstructionStep(
-      'il-check',
-    )
-
-    setStatus(
-      'Case 3 connections added automatically. Click CHECK to verify IL wiring.',
-    )
-    observations.nortonResistance !== null
-observations.shortCircuitCurrent !== null
-observations.loadCurrent === null
-  }
-
-  /*
-   * This request triggers ConnectionLab's
-   * case-wise Auto Connect effect.
-   */
-  setAutoConnectRequest(
-    (current) => current + 1,
+  setInstructionStep(
+    instructionByCase[currentCase],
+  )
+  setStatus(
+    `${descriptionByCase[currentCase]} is being connected. Click CHECK when it is ready.`,
   )
 
-  const caseDescription = {
-    rn:
-      'Case 1 wiring for Norton resistance has been completed automatically.',
-
-    isc:
-      'Case 2 wiring for short-circuit current has been completed automatically.',
-
-    il:
-      'Case 3 wiring for load current has been completed automatically.',
-  }
+  setAutoConnectRequest((request) => ({
+    id: request.id + 1,
+    caseKey: currentCase,
+  }))
 
   showAlertWithOptionalAudio(
     {
       dedupeKey:
-        `norton-auto-connect-${caseKey}-${Date.now()}`,
-
-      title:
-        'Auto Connections Completed',
-
+        `norton-auto-connect-${currentCase}-${Date.now()}`,
+      title: 'Auto Connections Completed',
       description:
-        `${caseDescription[caseKey]} Click CHECK to verify the connections.`,
-
+        `${descriptionByCase[currentCase]} has been connected. Click CHECK to verify it.`,
       type: 'success',
-      icon: '✅',
       target: '#circuit-panel',
     },
-
     AI_GUIDE_AUDIO.autoConnect,
   )
-
-  autoConnectReleaseTimerRef.current =
-    window.setTimeout(() => {
-      autoConnectingRef.current =
-        false
-    }, 700)
 }
 
   const handleVoltageChange = useCallback((nextVoltage) => {
@@ -1924,16 +1890,16 @@ observations.loadCurrent === null
 
             <section className="workspace-grid">
               <aside className="left-panel">
-                <ActionButtons
+  <ActionButtons
   instructionStep={instructionStep}
   disabledButtons={{
   onAutoConnect:
-  powerOn ||
-  connectionsLocked ||
-  readingCount >= 3,
+    powerOn ||
+    connectionsLocked ||
+    readingCount >= 3,
   
   onCheck:
-    powerOn ||
+    (powerOn && currentCase !== 'il') ||
     connectionsLocked,
 
   onAdd:

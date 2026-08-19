@@ -158,10 +158,6 @@ const getAllConnections = (instance) => {
 
   return []
 }
-const isNegativeTerminal = (terminalId) => (
-  NEGATIVE_TERMINALS.includes(terminalId)
-  || CIRCUIT_NEGATIVE_TERMINALS.includes(terminalId)
-)
 export const deleteConnectionsForTerminal = (instance, terminalId) => {
   const matchingConnections = getAllConnections(instance).filter((connection) => {
     const sourceId = connection.sourceId || connection.source?.id
@@ -183,75 +179,84 @@ export const deleteConnectionsForTerminal = (instance, terminalId) => {
 }
 const terminalPaintStyles = {
   positive: {
-    fill: '#0969e8',
-    outlineStroke: '#f8fbff',
+    fill: '#d72828',
+    outlineStroke: '#fff3f0',
     outlineWidth: 2,
-    stroke: '#062b77',
+    stroke: '#8f1010',
     strokeWidth: 1.4,
   },
   negative: {
-    fill: '#e33024',
-    outlineStroke: '#fff8f6',
+    fill: '#151515',
+    outlineStroke: '#f5f5f5',
     outlineWidth: 2,
-    stroke: '#8f140e',
+    stroke: '#000000',
     strokeWidth: 1.4,
   },
 }
 
 const terminalHoverPaintStyles = {
   positive: {
-    fill: '#2a7cff',
+    fill: '#ef4444',
     outlineStroke: '#ffffff',
     outlineWidth: 2.4,
-    stroke: '#082767',
+    stroke: '#7f1010',
     strokeWidth: 1.6,
   },
   negative: {
-    fill: '#ff4a3d',
+    fill: '#333333',
     outlineStroke: '#ffffff',
     outlineWidth: 2.4,
-    stroke: '#81130f',
+    stroke: '#000000',
     strokeWidth: 1.6,
   },
 }
 export const wirePaintStyles = {
   positive: {
-    outlineStroke: '#07306e',
+    outlineStroke: '#741713',
     outlineWidth: 1.15,
-    stroke: '#1f73e6',
+    stroke: '#d72828',
     strokeWidth: 4.6,
   },
   negative: {
-    outlineStroke: '#771914',
+    outlineStroke: '#000000',
     outlineWidth: 1.15,
-    stroke: '#dd342d',
+    stroke: '#151515',
     strokeWidth: 4.6,
   },
 }
 
 export const wireHoverPaintStyles = {
   positive: {
-    outlineStroke: '#052357',
+    outlineStroke: '#67100d',
     outlineWidth: 1.35,
-    stroke: '#3a8aff',
+    stroke: '#ef4444',
     strokeWidth: 5,
   },
   negative: {
-    outlineStroke: '#5d110d',
+    outlineStroke: '#000000',
     outlineWidth: 1.35,
-    stroke: '#f04a42',
+    stroke: '#333333',
     strokeWidth: 5,
   },
 }
-const getConnectionType = (
-  sourceId,
-  targetId,
-) => {
-  const isNegative =
-    isNegativeTerminal(sourceId) ||
-    isNegativeTerminal(targetId)
 
-  return isNegative
+const getConnectionType = (terminalId) => {
+  const polarity = document
+    .getElementById(terminalId)
+    ?.dataset?.polarity
+
+  if (polarity === 'minus') {
+    return 'negative'
+  }
+
+  if (polarity === 'plus') {
+    return 'positive'
+  }
+
+  return (
+    NEGATIVE_TERMINALS.includes(terminalId) ||
+    CIRCUIT_NEGATIVE_TERMINALS.includes(terminalId)
+  )
     ? 'negative'
     : 'positive'
 }
@@ -274,6 +279,7 @@ const connectTerminalPair = (
       sourceId,
       targetId,
     ],
+    type: getConnectionType(sourceId),
   })
 }
 
@@ -285,13 +291,7 @@ const replaceConnections = (
     return
   }
 
-  /*
-   * Previous case ki saari wires remove karo.
-   * Isse Auto Connect hamesha exact current-case
-   * wiring banayega, extra wires nahi rahengi.
-   */
   instance.setSuspendDrawing?.(true)
-
   instance.deleteEveryConnection?.()
 
   connectionPairs.forEach(
@@ -311,32 +311,19 @@ const replaceConnections = (
 
   instance.repaintEverything?.()
 }
-export const autoConnectRN = (
-  instance,
-) => {
-  replaceConnections(
-    instance,
-    RN_CONNECTIONS,
-  )
+
+export const autoConnectRN = (instance) => {
+  replaceConnections(instance, RN_CONNECTIONS)
 }
 
-export const autoConnectISC = (
-  instance,
-) => {
-  replaceConnections(
-    instance,
-    ISC_CONNECTIONS,
-  )
+export const autoConnectISC = (instance) => {
+  replaceConnections(instance, ISC_CONNECTIONS)
 }
 
-export const autoConnectIL = (
-  instance,
-) => {
-  replaceConnections(
-    instance,
-    IL_CONNECTIONS,
-  )
+export const autoConnectIL = (instance) => {
+  replaceConnections(instance, IL_CONNECTIONS)
 }
+
 const normalizeConnectionPair = (
   firstId,
   secondId,
@@ -562,23 +549,6 @@ export const addAllEndpoints = (instance) => {
     addTerminalEndpoint(instance, terminalId, 'negative')
   })
 }
-
-const applyAutoConnections = (instance, connections) => {
-  instance.deleteEveryConnection?.()
-
-  connections.forEach(([source, target]) => {
-    instance.connect({
-      uuids: [source, target],
-      type: isNegativeTerminal(source) ? 'negative' : 'positive',
-    })
-  })
-}
-
-
-
-
-
-
 
 export const lockJsPlumbCircuit = (instance, containerElement) => {
   getAllConnections(instance).forEach((connection) => {

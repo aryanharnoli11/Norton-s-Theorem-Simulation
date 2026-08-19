@@ -8,9 +8,9 @@ import EquipmentPanel from './EquipmentPanel.jsx'
 
 import {
   addAllEndpoints,
-  autoConnectRN,
-  autoConnectISC,
   autoConnectIL,
+  autoConnectISC,
+  autoConnectRN,
   resolveJsPlumb,
   setJsPlumbCircuitLocked,
   validateNortonConnections,
@@ -414,60 +414,54 @@ useEffect(() => {
     Boolean(connectionsLocked),
   )
 }, [connectionsLocked])
-  useEffect(() => {
+
+useEffect(() => {
+  const requestId =
+    autoConnectRequest?.id ?? 0
+
+  const caseToConnect =
+    autoConnectRequest?.caseKey
+
   if (
-    autoConnectRequest === 0 ||
-    !instanceRef.current ||
-    connectionsLocked
+    requestId === 0 ||
+    !caseToConnect ||
+    !instanceRef.current
   ) {
-    return
+    return undefined
   }
 
-  const timer =
-    window.setTimeout(() => {
-      const instance =
-        instanceRef.current
+  const timer = window.setTimeout(() => {
+    const instance = instanceRef.current
 
-      const caseToConnect =
-        currentCaseRef.current
+    if (!instance) {
+      return
+    }
 
-      if (
-        !instance ||
-        !caseToConnect
-      ) {
-        return
-      }
+    switch (caseToConnect) {
+      case 'rn':
+        autoConnectRN(instance)
+        break
 
-      switch (caseToConnect) {
-        case 'rn':
-          autoConnectRN(instance)
-          break
+      case 'isc':
+        autoConnectISC(instance)
+        break
 
-        case 'isc':
-          autoConnectISC(instance)
-          break
+      case 'il':
+        autoConnectIL(instance)
+        break
 
-        case 'il':
-          autoConnectIL(instance)
-          break
-
-        default:
-          console.warn(
-            'Unknown Norton auto-connect case:',
-            caseToConnect,
-          )
-      }
-
-      instance.repaintEverything?.()
-    }, 150)
+      default:
+        console.warn(
+          'Unknown Norton auto-connect case:',
+          caseToConnect,
+        )
+    }
+  }, 150)
 
   return () => {
     window.clearTimeout(timer)
   }
-}, [
-  autoConnectRequest,
-  connectionsLocked,
-])
+}, [autoConnectRequest])
 
 useEffect(() => {
   if (

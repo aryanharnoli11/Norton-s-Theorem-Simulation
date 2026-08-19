@@ -3,6 +3,7 @@ import SectionCard from './SectionCard.jsx'
 const formatValue = (
   value,
   digits,
+  scale = 1,
 ) => {
   if (
     value === null ||
@@ -18,7 +19,7 @@ const formatValue = (
     return '-'
   }
 
-  return number.toFixed(digits)
+  return (number * scale).toFixed(digits)
 }
 
 const ObservationTable = ({
@@ -52,27 +53,27 @@ const ObservationTable = ({
               </th>
 
               <th>
-                I<sub>SC</sub>
+                I<sub>N</sub>
                 <br />
-                (A)
+                (mA)
               </th>
 
               <th>
                 R<sub>N</sub>
                 <br />
-                (&Omega;)
+                (k&Omega;)
               </th>
 
               <th>
                 I<sub>L</sub>
                 <br />
-                (A)
+                (mA)
               </th>
 
               <th>
                 R<sub>L</sub>
                 <br />
-                (&Omega;)
+                (k&Omega;)
               </th>
             </tr>
           </thead>
@@ -95,6 +96,7 @@ const ObservationTable = ({
                   observations
                     .shortCircuitCurrent,
                   3,
+                  1000,
                 )}
               </td>
 
@@ -102,7 +104,8 @@ const ObservationTable = ({
                 {formatValue(
                   observations
                     .nortonResistance,
-                  2,
+                  3,
+                  0.001,
                 )}
               </td>
 
@@ -110,6 +113,7 @@ const ObservationTable = ({
                 {formatValue(
                   observations.loadCurrent,
                   3,
+                  1000,
                 )}
               </td>
 

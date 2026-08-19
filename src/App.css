@@ -2598,8 +2598,15 @@ li.instruction-substep--active {
   object-fit: contain;
   pointer-events: none;
   user-select: none;
-  transform: rotate(48deg);
+  transform: rotate(0deg);
   transform-origin: center;
+  transition: transform 180ms ease-out;
+}
+
+/* The pointer rests on OFF, then moves to the 20 kΩ range for a reading. */
+.digital-multimeter--active
+.digital-multimeter__knob {
+  transform: rotate(96deg);
 }
 
 /* Reading over the black screen in the image */
