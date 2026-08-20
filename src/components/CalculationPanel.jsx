@@ -21,7 +21,16 @@ const toFiniteNumber = (
     : fallback
 }
 
-const sanitizeNumberInput = (value) => {
+const NORTON_INPUT_RANGES = {
+  in: { min: 0, max: 50 },
+  rn: { min: 0, max: 50 },
+  rl: { min: 0, max: 3 },
+}
+
+const sanitizeNumberInput = (
+  value,
+  { min, max },
+) => {
   let nextValue = String(value).replace(/[^\d.-]/g, '')
 
   nextValue = nextValue.replace(/(?!^)-/g, '')
@@ -35,10 +44,37 @@ const sanitizeNumberInput = (value) => {
   const limitedDecimal =
     decimalParts.join('').slice(0, 4)
 
-  return decimalParts.length > 0
+  const sanitizedValue = decimalParts.length > 0
     ? `${limitedInteger}.${limitedDecimal}`
     : limitedInteger
+
+  if (sanitizedValue.startsWith('-')) {
+    return String(min)
+  }
+
+  const numericValue = Number(sanitizedValue)
+
+  if (
+    sanitizedValue !== '' &&
+    Number.isFinite(numericValue)
+  ) {
+    if (numericValue > max) {
+      return String(max)
+    }
+
+    if (numericValue < min) {
+      return String(min)
+    }
+  }
+
+  return sanitizedValue
 }
+
+const formatVoltage = (value) => (
+  Number.isInteger(value)
+    ? value.toFixed(0)
+    : value.toFixed(1)
+)
 
 const CalculationPanel = ({
   observations = {},
@@ -139,9 +175,14 @@ useEffect(() => {
   parameter,
   value,
 ) => {
+  const inputRange = NORTON_INPUT_RANGES[parameter]
+
   setNortonInputs((current) => ({
     ...current,
-    [parameter]: sanitizeNumberInput(value),
+    [parameter]: sanitizeNumberInput(
+      value,
+      inputRange,
+    ),
   }))
 
   setVerificationMessage('')
@@ -390,7 +431,7 @@ const handleVerify = () => {
 
       <div className="inline-display">
         {calculationDone && sourceVoltage !== null
-          ? sourceVoltage.toFixed(1)
+          ? formatVoltage(sourceVoltage)
           : ''}
       </div>
 
@@ -474,7 +515,12 @@ const handleVerify = () => {
             className="norton-formula-input"
             aria-label="Enter Norton current"
             inputMode="decimal"
+            max={NORTON_INPUT_RANGES.in.max}
+            min={NORTON_INPUT_RANGES.in.min}
             placeholder="Enter Value"
+            step="any"
+            title="Allowed range: 0 to 50 mA"
+            type="number"
             value={nortonInputs.in}
             disabled={!isReady}
             onChange={(event) =>
@@ -506,7 +552,12 @@ const handleVerify = () => {
               className="norton-formula-input"
               aria-label="Enter Norton resistance"
               inputMode="decimal"
+              max={NORTON_INPUT_RANGES.rn.max}
+              min={NORTON_INPUT_RANGES.rn.min}
               placeholder="Enter Value"
+              step="any"
+              title="Allowed range: 0 to 50 kΩ"
+              type="number"
               value={nortonInputs.rn}
               disabled={!isReady}
               onChange={(event) =>
@@ -542,7 +593,12 @@ const handleVerify = () => {
               className="norton-formula-input"
               aria-label="Enter load resistance"
               inputMode="decimal"
+              max={NORTON_INPUT_RANGES.rl.max}
+              min={NORTON_INPUT_RANGES.rl.min}
               placeholder="Enter Value"
+              step="any"
+              title="Allowed range: 0 to 3 kΩ"
+              type="number"
               value={nortonInputs.rl}
               disabled={!isReady}
               onChange={(event) =>

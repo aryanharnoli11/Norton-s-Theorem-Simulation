@@ -303,6 +303,18 @@ const getObservationSignature = ({ i1, i2, i3, voltage }) => (
   ].join('|')
 )
 
+const formatVoltage = (value) => {
+  const number = Number(value)
+
+  if (!Number.isFinite(number)) {
+    return ''
+  }
+
+  return Number.isInteger(number)
+    ? number.toFixed(0)
+    : number.toFixed(1)
+}
+
 const getScale = () => {
   if (typeof window === 'undefined') {
     return 1
@@ -531,13 +543,7 @@ useEffect(() => {
   return () => window.removeEventListener('walkthrough-complete', handleComplete)
 }, [aiGuideEnabled, playAiGuideAudio])*/
 
- const handleResistanceChange = (
-  key,
-  setter,
-  value,
-) => {
-  setter(value)
-
+ const handleResistanceCommit = (key) => {
   touchedResistorsRef.current.add(key)
 
   if (
@@ -1091,9 +1097,9 @@ const canAddReading =
       showAlertWithOptionalAudio({
         title: 'Use the Same Supply Voltage',
         description:
-          `Set the supply to ${Number(
+          `Set the supply to ${formatVoltage(
             lockedExperimentVoltage,
-          ).toFixed(1)} V, the same voltage used while measuring Isc.`,
+          )} V, the same voltage used while measuring Isc.`,
         type: 'warning',
         icon: '⚠️',
         target: '#voltage-control',
@@ -2015,6 +2021,26 @@ const handleAutoConnectComplete = useCallback((result) => {
     showAlertWithOptionalAudio,
   ])
 
+  const handleVoltageCommit = useCallback((nextVoltage) => {
+    const numericVoltage = Number(nextVoltage)
+
+    if (
+      !powerOn ||
+      lockedVoltage !== null ||
+      !Number.isFinite(numericVoltage) ||
+      numericVoltage <= 0
+    ) {
+      return
+    }
+
+    setLockedVoltage(
+      Number(numericVoltage.toFixed(1)),
+    )
+  }, [
+    lockedVoltage,
+    powerOn,
+  ])
+
   return (
     <div id="app-wrapper">
       <div
@@ -2080,23 +2106,18 @@ const handleAutoConnectComplete = useCallback((result) => {
 
                 <ControlPanel
                   locked={
-  powerOn
-  || currentSourceOn
-  || (
-    observations.currentSourceOnly !== null
-    && observations.voltageSourceOnly !== null
-    && observations.bothSources === null
-  )
+  resistanceSet || powerOn || currentSourceOn
 }
                   observations={observations}
                   r1={r1}
                   r2={r2}
                   r3={r3}
                   rl={rl}
-                  setR1={(value) => handleResistanceChange('r1', setR1, value)}
-setR2={(value) => handleResistanceChange('r2', setR2, value)}
-setR3={(value) => handleResistanceChange('r3', setR3, value)}
-                  setRl={(value) => handleResistanceChange('rl', setRl, value)}
+                  setR1={setR1}
+                  setR2={setR2}
+                  setR3={setR3}
+                  setRl={setRl}
+                  onResistanceCommit={handleResistanceCommit}
                 />
               </aside>
 
@@ -2130,6 +2151,7 @@ setR3={(value) => handleResistanceChange('r3', setR3, value)}
 
   onTogglePower={handleTogglePower}
   setVoltage={handleVoltageChange}
+  onVoltageCommit={handleVoltageCommit}
   voltage={voltage}
 
   lockedVoltage={Boolean(lockedVoltage)}

@@ -22,6 +22,23 @@ const formatValue = (
   return (number * scale).toFixed(digits)
 }
 
+const formatVoltage = (value) => {
+  const number = Number(value)
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === '' ||
+    !Number.isFinite(number)
+  ) {
+    return '-'
+  }
+
+  return Number.isInteger(number)
+    ? number.toFixed(0)
+    : number.toFixed(1)
+}
+
 const ObservationTable = ({
   observations = {},
 }) => {
@@ -85,9 +102,8 @@ const ObservationTable = ({
               </td>
 
               <td>
-                {formatValue(
+                {formatVoltage(
                   observations.voltage,
-                  1,
                 )}
               </td>
 

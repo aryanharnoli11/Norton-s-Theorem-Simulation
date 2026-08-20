@@ -56,6 +56,7 @@ const ResistanceSlider = ({
   max = 10,
   step = 0.1,
   onChange,
+  onCommit,
   value,
 }) => {
   const normalizedValue =
@@ -110,6 +111,7 @@ const ResistanceSlider = ({
     setIsEditing(false)
 
     onChange?.(committedValue)
+    onCommit?.(committedValue)
   }
 
   const handleChange = (event) => {

@@ -15,6 +15,7 @@ rl = 1,
   setR2,
   setR3,
   setRl,
+  onResistanceCommit,
 }) => (
   <>
     <SectionCard
@@ -31,6 +32,7 @@ rl = 1,
   max={5}
   step={1}
   onChange={setR1}
+  onCommit={() => onResistanceCommit?.('r1')}
   value={r1}
 />
 
@@ -41,6 +43,7 @@ rl = 1,
   max={5}
   step={1}
   onChange={setR2}
+  onCommit={() => onResistanceCommit?.('r2')}
   value={r2}
 />
 
@@ -51,6 +54,7 @@ rl = 1,
   max={5}
   step={1}
   onChange={setR3}
+  onCommit={() => onResistanceCommit?.('r3')}
   value={r3}
 />
 
@@ -61,6 +65,7 @@ rl = 1,
   max={3}
   step={0.5}
   onChange={setRl}
+  onCommit={() => onResistanceCommit?.('rl')}
   value={rl}
 />
       </div>

@@ -9,6 +9,7 @@ const PowerSupply = ({
   onTogglePower,
   powerOn = false,
   setVoltage,
+  onVoltageCommit,
   voltage = 0,
   locked = false,
   sourcesLocked = false,
@@ -16,11 +17,15 @@ const PowerSupply = ({
   const numericVoltage = Number(voltage)
 
   const safeVoltage = Number.isFinite(numericVoltage)
-    ? numericVoltage
+    ? Math.min(Math.max(numericVoltage, 0), 15)
     : 0
 
+  const formattedVoltage = Number.isInteger(safeVoltage)
+    ? safeVoltage.toFixed(0)
+    : safeVoltage.toFixed(1)
+
   const displayedVoltage = powerOn
-    ? `${safeVoltage.toFixed(1)} V`
+    ? `${formattedVoltage} V`
     : ''
 
   const handleVoltageChange = (event) => {
@@ -32,6 +37,21 @@ const PowerSupply = ({
 
     setVoltage?.(
       Number(nextVoltage.toFixed(1)),
+    )
+  }
+
+  const handleVoltageCommit = (event) => {
+    const committedVoltage = Number(event.currentTarget.value)
+
+    if (
+      !Number.isFinite(committedVoltage) ||
+      committedVoltage <= 0
+    ) {
+      return
+    }
+
+    onVoltageCommit?.(
+      Number(committedVoltage.toFixed(1)),
     )
   }
 
@@ -52,6 +72,7 @@ const PowerSupply = ({
     >
       <img
         className="power-supply__body-image"
+        id="power-supply-walkthrough-target"
         src={powerOn ? supplyOnImage : supplyOffImage}
         alt={`DC voltage source ${powerOn ? 'on' : 'off'}`}
       />
@@ -62,7 +83,7 @@ const PowerSupply = ({
         aria-hidden="true"
         className="power-supply__knob"
         style={{
-          transform: `rotate(${safeVoltage * 27}deg)`,
+          transform: `rotate(${safeVoltage * 18}deg)`,
         }}
       />
 
@@ -145,9 +166,11 @@ const PowerSupply = ({
           className="voltage-range"
           disabled={!powerOn || locked || sourcesLocked}
           id="voltage-slider"
-          max="10"
+          max="15"
           min="0"
           onChange={handleVoltageChange}
+          onBlur={handleVoltageCommit}
+          onPointerUp={handleVoltageCommit}
           step="0.1"
           type="range"
           value={safeVoltage}

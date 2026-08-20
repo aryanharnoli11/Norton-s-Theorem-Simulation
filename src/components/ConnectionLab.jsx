@@ -63,6 +63,7 @@ const ConnectionLab = ({
 
   onTogglePower,
   setVoltage,
+  onVoltageCommit,
   voltage,
 
   lockedVoltage = false,
@@ -749,6 +750,7 @@ const removeConnectionsForTerminal = (terminalId) => {
         onTogglePower={onTogglePower}
         powerOn={powerOn}
         setVoltage={setVoltage}
+        onVoltageCommit={onVoltageCommit}
         voltage={voltage}
         lockedVoltage={lockedVoltage}
         sourcesLocked={sourcesLocked}

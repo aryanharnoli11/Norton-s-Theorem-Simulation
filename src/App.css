@@ -2170,6 +2170,11 @@ p,
   transform-origin: center;
   transition: transform 180ms ease;
 }
+
+#power-supply-walkthrough-target.walkthrough-active-target {
+  animation: none;
+  filter: none;
+}
 /* =========================================================
    NORTON CALCULATION PANEL
    ========================================================= */
@@ -3487,10 +3492,10 @@ border-top: none;
    ========================================================= */
 
 .norton-calculation-panel .copyright-footer {
-  width: 100%;
+  width: calc(100% + 64px);
   box-sizing: border-box;
-  margin-top: 28px;
-  padding: 24px 20px;
+  margin: 18px -32px 0;
+  padding: 13px 20px;
 
   background: linear-gradient(
     180deg,
@@ -3501,8 +3506,9 @@ border-top: none;
   color: #ffffff;
   text-align: center;
 
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 800;
+  line-height: 1.2;
 
   border-top: 1px solid rgba(255, 255, 255, 0.18);
 }

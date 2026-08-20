@@ -13,6 +13,7 @@ const EquipmentPanel = ({
   onTogglePower,
   powerOn = false,
   setVoltage,
+  onVoltageCommit,
   voltage = 0,
 
   lockedVoltage = false,
@@ -48,6 +49,7 @@ const EquipmentPanel = ({
   onTogglePower={onTogglePower}
   powerOn={powerOn}
   setVoltage={setVoltage}
+  onVoltageCommit={onVoltageCommit}
   voltage={voltage}
   locked={lockedVoltage}
   sourcesLocked={sourcesLocked}
