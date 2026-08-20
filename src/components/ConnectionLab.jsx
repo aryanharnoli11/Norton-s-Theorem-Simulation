@@ -680,24 +680,37 @@ const removeConnectionsForTerminal = (terminalId) => {
   }
 }
 
+  const recordedNortonCurrent = Number(
+    observations.shortCircuitCurrent,
+  )
+
+  const hasRecordedNortonCurrent =
+    observations.shortCircuitCurrent !== null &&
+    observations.shortCircuitCurrent !== undefined &&
+    Number.isFinite(recordedNortonCurrent)
+
   const ammeterReading = (() => {
-    if (!powerOn) {
+    /*
+     * The ammeter dial is a 0–10 mA scale. Once IN has been added to the
+     * observation table, keep using that recorded value so unrelated state
+     * changes (power-off and the next case) cannot move the needle.
+     */
+    if (hasRecordedNortonCurrent) {
+      return Number(
+        Math.abs(
+          recordedNortonCurrent * 1000,
+        ).toFixed(3),
+      )
+    }
+
+    if (!powerOn || currentCase !== 'isc') {
       return 0
     }
 
-    if (currentCase === 'isc') {
-      return Number(
-        readings.shortCircuitCurrent,
-      ) || 0
-    }
-
-    if (currentCase === 'il') {
-      return Number(
-        readings.loadCurrent,
-      ) || 0
-    }
-
-    return 0
+    return Math.abs(
+      (Number(readings.shortCircuitCurrent) || 0) *
+        1000,
+    )
   })()
 
   const multimeterReading =

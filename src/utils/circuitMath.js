@@ -16,6 +16,31 @@ const toResistanceOhms = (value) => (
   )
 )
 
+export const calculateNortonLoadCurrent = ({
+  nortonCurrent,
+  nortonResistance,
+  loadResistance,
+}) => {
+  const current = Number(nortonCurrent)
+  const rn = Number(nortonResistance)
+  const rl = Number(loadResistance)
+  const denominator = rn + rl
+
+  if (
+    !Number.isFinite(current) ||
+    !Number.isFinite(rn) ||
+    !Number.isFinite(rl) ||
+    current < 0 ||
+    rn < 0 ||
+    rl < 0 ||
+    denominator <= 0
+  ) {
+    return null
+  }
+
+  return current / denominator
+}
+
 export const calculateReadings = ({
   voltage,
   powerOn,
@@ -115,22 +140,20 @@ const RL = toResistanceOhms(rl)
       : 0
 
   /*
-   * Norton equivalent verification:
+   * Norton load current used by the observation and verification panels:
    *
-   * IL = Isc × RN / (RN + RL)
+   * IL = IN / (RN + RL)
+   *
+   * Resistances are converted to kΩ so the returned current remains in
+   * the same display unit as IN.
    */
   const nortonCalculatedLoadCurrent =
-    (
-      nortonResistance + RL
-    ) > 0
-      ? shortCircuitCurrent *
-        (
-          nortonResistance /
-          (
-            nortonResistance + RL
-          )
-        )
-      : 0
+    calculateNortonLoadCurrent({
+      nortonCurrent: shortCircuitCurrent,
+      nortonResistance:
+        nortonResistance / 1000,
+      loadResistance: RL / 1000,
+    }) ?? 0
 
   return {
     nortonResistance,

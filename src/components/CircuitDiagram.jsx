@@ -73,19 +73,19 @@ const CircuitDiagram = ({
       ))}
 
       <span className="resistor-value resistor-value--norton-r1">
-        {r1} Ω
+        {r1} kΩ
       </span>
 
       <span className="resistor-value resistor-value--norton-r2">
-        {r2} Ω
+        {r2} kΩ
       </span>
 
       <span className="resistor-value resistor-value--norton-r3">
-        {r3} Ω
+        {r3} kΩ
       </span>
 
       <span className="resistor-value resistor-value--norton-rl">
-        {rl} Ω
+        {rl} kΩ
       </span>
     </div>
   </section>

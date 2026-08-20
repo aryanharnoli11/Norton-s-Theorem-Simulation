@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { calculateNortonLoadCurrent } from '../utils/circuitMath.js'
 import SectionCard from './SectionCard.jsx'
 
 const toFiniteNumber = (
@@ -82,6 +83,9 @@ const [nortonInputs, setNortonInputs] = useState({
       resistanceValues.rl,
     )
 
+  const sourceVoltage =
+    toFiniteNumber(voltageValue)
+
   const observedLoadCurrent =
     toFiniteNumber(
       observations.loadCurrent,
@@ -97,24 +101,11 @@ const enteredRn = Number(nortonInputs.rn)
 const enteredRl = Number(nortonInputs.rl)
 
 const calculatedLoadCurrent = useMemo(() => {
-  const denominator =
-    enteredRn + enteredRl
-
-  if (
-    !Number.isFinite(enteredIn) ||
-    !Number.isFinite(enteredRn) ||
-    !Number.isFinite(enteredRl) ||
-    enteredIn < 0 ||
-    enteredRn < 0 ||
-    enteredRl < 0 ||
-    denominator <= 0
-  ) {
-    return null
-  }
-
-  // Values are entered in mA and kΩ.
-  // Required formula: IL = IN / (RN + RL)
-  return enteredIn / denominator
+  return calculateNortonLoadCurrent({
+    nortonCurrent: enteredIn,
+    nortonResistance: enteredRn,
+    loadResistance: enteredRl,
+  })
 }, [
   enteredIn,
   enteredRn,
@@ -155,6 +146,7 @@ useEffect(() => {
 
   setVerificationMessage('')
   setVerificationStatus('idle')
+  onVerificationComplete?.([])
 
   setInstructionStep?.(
     'calculation-enter-value',
@@ -173,6 +165,7 @@ const handleVerify = () => {
     )
 
     setVerificationStatus('error')
+    onVerificationComplete?.([])
 
     return
   }
@@ -183,6 +176,7 @@ const handleVerify = () => {
     )
 
     setVerificationStatus('error')
+    onVerificationComplete?.([])
 
     return
   }
@@ -202,14 +196,17 @@ const handleVerify = () => {
     )
 
 
-  const tolerance = Math.max(
-    0.02,
-    Math.abs(observedLoadCurrentMA) * 0.05,
+  /*
+   * Compare the values at the precision shown to the user. A difference of
+   * one unit in the final displayed decimal (for example 1.332 vs 1.333)
+   * is accepted.
+   */
+  const displayedDifferenceSteps = Math.abs(
+    Math.round(calculatedLoadCurrent * 1000) -
+      Math.round(observedLoadCurrentMA * 1000),
   )
 
-
-  const verified =
-    difference <= tolerance
+  const verified = displayedDifferenceSteps <= 1
 
 
   const verificationRows = [
@@ -381,10 +378,34 @@ const handleVerify = () => {
 
   </div>
 
+  <div className="source-values-card">
+
+    <h3>Source Values</h3>
+
+    <div className="source-value-row">
+
+      <span className="source-value-label">
+        Voltage Source:
+      </span>
+
+      <div className="inline-display">
+        {calculationDone && sourceVoltage !== null
+          ? sourceVoltage.toFixed(1)
+          : ''}
+      </div>
+
+      <span className="inline-unit">V</span>
+
+    </div>
+
+  </div>
+
 </div>
 
       {/* OBSERVED LOAD CURRENT */}
 
+
+<div className="norton-current-card">
 
 {/* OBSERVED LOAD CURRENT */}
 
@@ -572,6 +593,8 @@ const handleVerify = () => {
 
 </div>
 
+</div>
+
       {/* VERIFY BUTTON */}
 
       <div className="norton-verification-section">
@@ -581,10 +604,7 @@ const handleVerify = () => {
           type="button"
           className="norton-verify-btn"
           onClick={handleVerify}
-          disabled={
-            !isReady ||
-            calculatedLoadCurrent === null
-          }
+          disabled={!calculationDone}
         >
           Verify
         </button>

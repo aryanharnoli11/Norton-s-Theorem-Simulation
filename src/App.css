@@ -776,14 +776,14 @@ box-shadow: none;
   overflow: hidden;
   --ammeter-image-scale: 1.3;
   --ammeter-image-top: -15px;
-  --ammeter-needle-top: 95px;
-  --ammeter-needle-left: 30px;
-  --ammeter-needle-width: 130px;
-  --ammeter-needle-height: 40px;
-  --ammeter-needle-origin-x: 60%;
-  --ammeter-needle-origin-y: 38%;
-  --ammeter-needle-image-top: 3px;
-  --ammeter-needle-image-left: -8px;
+  --ammeter-needle-top: 85px;
+  --ammeter-needle-left: 63px;
+  --ammeter-needle-width: 100px;
+  --ammeter-needle-height: 100px;
+  --ammeter-needle-origin-x: 50%;
+  --ammeter-needle-origin-y: 63%;
+  --ammeter-needle-image-top: 0;
+  --ammeter-needle-image-left: 0;
   --ammeter-needle-image-width: 100px;
   filter: none;
   transform: none;
@@ -830,7 +830,7 @@ box-shadow: none;
   display: block;
   width: var(--ammeter-needle-image-width);
   height: auto;
-  transform: translateY(-50%);
+  transform: none;
 }
 
 .ammeter__label {
@@ -2687,7 +2687,7 @@ li.instruction-substep--active {
 }
 
 .digital-multimeter--disabled {
-  opacity: 0.76;
+  opacity: 1;
 }
 
 /*
@@ -2696,7 +2696,7 @@ li.instruction-substep--active {
  */
 .digital-multimeter--disabled
 .digital-multimeter__image {
-  filter: saturate(0.85);
+  filter: none;
 }
 
 .digital-multimeter--active {
@@ -3394,8 +3394,8 @@ border-top: none;
   background:
     linear-gradient(
       180deg,
-      #a5e2b7,
-      #7bc996
+      #55c878,
+      #168a43
     );
 
   font-size: 20px;
@@ -3404,7 +3404,7 @@ border-top: none;
   cursor: pointer;
 
   box-shadow:
-    0 8px 18px rgba(58, 93, 67, 0.20);
+    0 8px 18px rgba(33, 113, 59, 0.32);
 }
 
 .norton-verify-btn:disabled {
@@ -3744,4 +3744,148 @@ border-top: none;
   gap: 10px;
 
   margin-top: 0;
+}
+
+/* =========================================================
+   NORTON THEORETICAL PANEL - THEVENIN-STYLE PRESENTATION
+   ========================================================= */
+
+.norton-calculation-panel .section-card__heading {
+  min-height: 72px;
+  justify-content: flex-start;
+  padding: 0 28px;
+  border-bottom: 1px solid rgba(116, 77, 42, 0.2);
+}
+
+.norton-calculation-panel .section-card__heading svg,
+.norton-calculation-panel .section-card__line {
+  display: none;
+}
+
+.norton-calculation-panel .section-card__heading h2 {
+  margin: 0;
+  font-size: 32px;
+  letter-spacing: 0.8px;
+}
+
+.norton-load-current-calculation {
+  gap: 24px;
+  padding: 28px 32px 0;
+  border: 1px solid rgba(116, 77, 42, 0.2);
+  border-radius: 14px;
+  background: rgba(255, 253, 248, 0.94);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+.norton-load-current-calculation .calc-top-row {
+  grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
+  gap: 20px;
+}
+
+.norton-load-current-calculation .values-card,
+.norton-load-current-calculation .source-values-card {
+  min-height: 132px;
+  padding: 22px 24px;
+  border: 1px solid rgba(115, 78, 45, 0.24);
+  border-radius: 12px;
+  background: linear-gradient(180deg, #fffdf8, #f7ecdb);
+  box-shadow: inset 0 1px 0 #fff;
+}
+
+.norton-load-current-calculation .values-card h3,
+.norton-load-current-calculation .source-values-card h3 {
+  margin: 0 0 18px;
+  color: #4a2b1f;
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.norton-load-current-calculation .values-inline-group {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.norton-load-current-calculation .inline-input-item,
+.norton-load-current-calculation .source-value-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.norton-load-current-calculation .inline-label,
+.norton-load-current-calculation .source-value-label,
+.norton-load-current-calculation .inline-unit {
+  color: #493024;
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.norton-load-current-calculation .inline-display {
+  display: grid;
+  width: 94px;
+  min-width: 94px;
+  height: 44px;
+  place-items: center;
+  box-sizing: border-box;
+  border: 1px solid rgba(112, 77, 44, 0.3);
+  border-radius: 8px;
+  color: #3e2a1f;
+  background: #fffdf8;
+  font-size: 17px;
+  font-weight: 700;
+  box-shadow: inset 0 1px 2px rgba(70, 40, 19, 0.07);
+}
+
+.norton-load-current-calculation .source-value-row {
+  margin-top: 2px;
+}
+
+.norton-current-card {
+  overflow: hidden;
+  border: 1px solid rgba(116, 77, 42, 0.24);
+  border-radius: 12px;
+  background: #fffaf2;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 6px 16px rgba(71, 41, 20, 0.08);
+}
+
+.norton-current-card .norton-observed-card,
+.norton-current-card .norton-calculated-card {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.norton-current-card .norton-observed-current-row {
+  min-height: 78px;
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(116, 77, 42, 0.2);
+}
+
+.norton-current-card .norton-calculated-current-section {
+  padding: 26px 24px 30px;
+}
+
+.norton-current-card .norton-load-current-equation {
+  max-width: 1120px;
+  margin-top: 22px;
+}
+
+.norton-verification-section {
+  gap: 14px;
+  padding-top: 0;
+}
+
+@media (max-width: 1050px) {
+  .norton-load-current-calculation .calc-top-row {
+    grid-template-columns: 1fr;
+  }
+
+  .norton-load-current-calculation .values-inline-group {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

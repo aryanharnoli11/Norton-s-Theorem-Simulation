@@ -1106,7 +1106,7 @@ const canAddReading =
       ...currentObservations,
 
       loadCurrent:
-        readings.loadCurrent,
+        readings.nortonCalculatedLoadCurrent,
 
       voltage: Number(voltage),
 
