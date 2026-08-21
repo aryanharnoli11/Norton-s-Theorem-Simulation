@@ -25,182 +25,194 @@ import {
   stopSharedAudio,
 } from './utils/audioController.js'
 const AI_GUIDE_AUDIO = {
-  case1Verified:
-    '/simulation-audios/After 1st case connections, check Connections Verified.wav',
-
-  case2Verified:
+  aiGuideClick: '/simulation-audios/AI Guide click.wav',
+  walkthroughComplete:
+    '/simulation-audios/The simulation walkthrough is now complete. You are now ready to perform the experiment. First set R1, R2, R3 and RL using the resistance sliders.wav',
+  resistanceRequired:
+    '/simulation-audios/Before resistance set, check & auto connect button click.wav',
+  resistanceReady:
+    '/simulation-audios/After resistance is set, check button click.wav',
+  nortonResistanceIntro:
+    '/simulation-audios/To measure the Norton resistance .wav',
+  chooseConnectionMode:
+    "/simulation-audios/Now you may either click the Auto Connect button to make the circuit connections automatically or connect the circuit manually by following the highlighted terminals Let's begin with the first connection.wav",
+  shortPowerSupply:
+    '/simulation-audios/Now, short circuit terminals 7 to 8.wav',
+  connectMultimeter:
+    '/simulation-audios/Connect the multimeter by click and drag the wire from terminal 3 and drop it on terminal 9..wav',
+  connectMultimeterReturn:
+    '/simulation-audios/Connect terminal 4 to terminal 11.wav',
+  allConnectionsComplete:
+    '/simulation-audios/Guide all complete conn.wav',
+  firstCaseAutoConnected:
+    '/simulation-audios/1st case Autoconnect.wav',
+  firstCaseChecked:
+    '/simulation-audios/After 1st case connections, check.wav',
+  secondCaseChecked:
     '/simulation-audios/After 2nd case connections, check.wav',
-
-  bothSourcesOn:
-    '/simulation-audios/After both sources are ON, Add button.wav',
-
-  afterCalculate:
-    '/simulation-audios/After clicking the calculate button.wav',
-
-  afterReadingCase1:
-    '/simulation-audios/After reading is added for the first case.wav',
-
-  afterReadingCase2:
+  rnReadingAdded:
+    '/simulation-audios/After the RN reading was added.wav',
+  secondReadingAdded:
     '/simulation-audios/After reading is added for the second case.wav',
-
-  afterReadingCase3:
+  thirdReadingAdded:
     '/simulation-audios/After reading is added for the third case.wav',
-
-  afterResistanceSet:
-    '/simulation-audios/After resistance is set, check button.wav',
-
-  afterAboveStep:
-    '/simulation-audios/After the above step.wav',
-
-  currentValueSet:
-    '/simulation-audios/After the current value is set.wav',
-
-  voltageValueSet:
-    '/simulation-audios/After the voltage value is set.wav',
-
-  autoConnect:
-    '/simulation-audios/Autoconnect.wav',
-
-  beforeAdd:
-    '/simulation-audios/Before adding reading, 1st time Add button.wav',
-
-  beforeResistance:
-    '/simulation-audios/Before resistance set, check & auto connect button.wav',
-
-  voltageSourceWarning:
-    '/simulation-audios/During the 1st case Voltage source Complete Current Source Case First.wav',
-
-  report:
-    '/simulation-audios/Generate Report.wav',
-
-  case3Verified:
+  secondCasePowerSupply:
+    '/simulation-audios/Power supply terminals, 2nd case.wav',
+  connectPowerSupplyPositive:
+    '/simulation-audios/Connect terminal 5 to 7.wav',
+  connectPowerSupplyNegative:
+    '/simulation-audios/Connect terminal 6 to 8..wav',
+  connectAmmeter:
+    '/simulation-audios/Connect ammeter.wav',
+  connectAmmeterReturn:
+    '/simulation-audios/Connect terminal 2 to terminal 11.wav',
+  thirdCaseAmmeter:
+    '/simulation-audios/Connect Ammeter2.wav',
+  connectAmmeterToLoad:
+    '/simulation-audios/Connect the ammeter terminals 2 to 10.wav',
+  connectLoadReturn:
+    '/simulation-audios/Connect terminal 11 to 12.wav',
+  checkCaseTwoOrThree:
+    '/simulation-audios/Before clicking the Check button for Case 2 and Case 3 connections.wav',
+  checkThirdCase:
     '/simulation-audios/Now check again for the 3rd case.wav',
-
+  continueWithAutoConnect:
+    '/simulation-audios/After 1st and 2nd cases are completed, click autoconnect.wav',
+  secondCaseAutoConnected:
+    '/simulation-audios/2nd case Autoconnect.wav',
+  thirdCaseAutoConnected:
+    '/simulation-audios/3rd case Autoconnect.wav',
+  voltageReady:
+    '/simulation-audios/After the voltage value is set.wav',
+  thirdCasePowerOn:
+    '/simulation-audios/Power supply turned ON for the 3rd case.wav',
+  calculationReady:
+    '/simulation-audios/After clicking the calculate button.wav',
+  verifyCorrect:
+    '/simulation-audios/Verify button click, Correct calculations.wav',
+  verifyIncorrect:
+    '/simulation-audios/Verify button click, Incorrect calculations.wav',
+  verifyOneMissing:
+    '/simulation-audios/Verify button click, one value is missing.wav',
+  verifyMultipleMissing:
+    '/simulation-audios/Verify button click, more than one value is missing.wav',
+  report:
+    '/simulation-audios/Generate Report2.wav',
   print:
     '/simulation-audios/Print.wav',
-
   reset:
     '/simulation-audios/Reset.wav',
-    aiGuideClick: '/simulation-audios/AI Guide click.wav',
-walkthroughComplete: '/simulation-audios/The simulation walkthrough is now complete.wav',
-chooseAutoOrManual: '/simulation-audios/Now, you may either click the Auto Connect button.wav',
-
-connect5To13: '/simulation-audios/Connect terminal 5 to terminal 13.wav',
-connect6To14: '/simulation-audios/Connect terminal 6 to terminal 14..wav',
-connect7To15: '/simulation-audios/Connect terminal 7 to terminal 15.wav',
-connect8To16: '/simulation-audios/Last connect terminal 8 to terminal 16..wav',
-short17To18: '/simulation-audios/now short terminal voltage to 17 to 18.wav',
-allConnectionsComplete: '/simulation-audios/Guide all complete conn for case 1.wav',
-allConnectionsComplete2: '/simulation-audios/Guide all complete conn for case 2.wav',
-allConnectionsComplete3: '/simulation-audios/Guide all complete conn for case 3.wav',
-connect17To19:"/simulation-audios/After the above steppart1.wav",
-connect18To20:"/simulation-audios/After the above step part 2.wav",
-wrongConnection: '/simulation-audios/Wrong connection.wav',
-multipleWrongConnections: '/simulation-audios/Multiple wrong connections.wav',
-
-verifyCorrect: '/simulation-audios/Verify button click, correct calculations.wav',
-verifyIncorrect: '/simulation-audios/Verify button click, Incorrect calculations.wav',
-
-beforeCase3Check: '/simulation-audios/Before clicking the Check button for Case 3 connections.wav',
-correctConnection1To9: '/simulation-audios/Correct Connections.wav',
-connect2To10: "/simulation-audios/Connect terminal 2 to terminal 10.wav",
-connect3To11: "/simulation-audios/Next, connect the ammeter's terminal 3 to terminal 11..wav",
-
-connect4To12: "/simulation-audios/Connect terminal 4 to terminal 12..wav",
-
-beforeCheckingCurrentSource: '/simulation-audios/Before checking, Current Source.wav',
-
-beforeCheckingVoltageSource:
-'/simulation-audios/During the 2nd case, Voltage source.wav',
+  wrongConnection:
+    '/simulation-audios/Wrong connection.wav',
+  multipleWrongConnections:
+    '/simulation-audios/Multiple wrong connections.wav',
 }
+
+const AI_GUIDE_AUDIO_DURATION_MS = new Map([
+  [AI_GUIDE_AUDIO.aiGuideClick, 17470],
+  [AI_GUIDE_AUDIO.walkthroughComplete, 10220],
+  [AI_GUIDE_AUDIO.resistanceRequired, 5540],
+  [AI_GUIDE_AUDIO.resistanceReady, 4200],
+  [AI_GUIDE_AUDIO.nortonResistanceIntro, 1960],
+  [AI_GUIDE_AUDIO.chooseConnectionMode, 12250],
+  [AI_GUIDE_AUDIO.shortPowerSupply, 2460],
+  [AI_GUIDE_AUDIO.connectMultimeter, 6220],
+  [AI_GUIDE_AUDIO.connectMultimeterReturn, 2120],
+  [AI_GUIDE_AUDIO.allConnectionsComplete, 5220],
+  [AI_GUIDE_AUDIO.firstCaseAutoConnected, 9850],
+  [AI_GUIDE_AUDIO.firstCaseChecked, 11650],
+  [AI_GUIDE_AUDIO.secondCaseChecked, 6300],
+  [AI_GUIDE_AUDIO.rnReadingAdded, 6940],
+  [AI_GUIDE_AUDIO.secondReadingAdded, 6900],
+  [AI_GUIDE_AUDIO.thirdReadingAdded, 6300],
+  [AI_GUIDE_AUDIO.secondCasePowerSupply, 5540],
+  [AI_GUIDE_AUDIO.connectPowerSupplyPositive, 1680],
+  [AI_GUIDE_AUDIO.connectPowerSupplyNegative, 1800],
+  [AI_GUIDE_AUDIO.connectAmmeter, 2380],
+  [AI_GUIDE_AUDIO.connectAmmeterReturn, 2380],
+  [AI_GUIDE_AUDIO.thirdCaseAmmeter, 1340],
+  [AI_GUIDE_AUDIO.connectAmmeterToLoad, 2300],
+  [AI_GUIDE_AUDIO.connectLoadReturn, 2100],
+  [AI_GUIDE_AUDIO.checkCaseTwoOrThree, 2720],
+  [AI_GUIDE_AUDIO.checkThirdCase, 3680],
+  [AI_GUIDE_AUDIO.continueWithAutoConnect, 4460],
+  [AI_GUIDE_AUDIO.secondCaseAutoConnected, 5040],
+  [AI_GUIDE_AUDIO.thirdCaseAutoConnected, 2720],
+  [AI_GUIDE_AUDIO.voltageReady, 6320],
+  [AI_GUIDE_AUDIO.thirdCasePowerOn, 6180],
+  [AI_GUIDE_AUDIO.calculationReady, 15940],
+  [AI_GUIDE_AUDIO.verifyCorrect, 8120],
+  [AI_GUIDE_AUDIO.verifyIncorrect, 7000],
+  [AI_GUIDE_AUDIO.verifyOneMissing, 4860],
+  [AI_GUIDE_AUDIO.verifyMultipleMissing, 5000],
+  [AI_GUIDE_AUDIO.report, 5020],
+  [AI_GUIDE_AUDIO.print, 1340],
+  [AI_GUIDE_AUDIO.reset, 3360],
+  [AI_GUIDE_AUDIO.wrongConnection, 1380],
+  [AI_GUIDE_AUDIO.multipleWrongConnections, 1640],
+])
+
 const AI_GUIDE_AUDIO_OWNER = 'ai-guide'
- const AI_GUIDE_CONNECTION_STEPS = {
-  case1: [
+const AI_GUIDE_CONNECTION_STEPS = {
+  rn: [
     {
-      key: 'case1-1-9',
-      terminals: ['1-endpoint', '9-endpoint'],
-      text: "Let's start with case-1 connection",
-      audio: AI_GUIDE_AUDIO.correctConnection1To9,
+      key: 'rn-7-8',
+      terminals: ['7-endpoint', '8-endpoint'],
+      text: 'Short the power-supply terminals 7 and 8.',
+      audio: AI_GUIDE_AUDIO.shortPowerSupply,
     },
     {
-      key: 'case1-2-10',
-      terminals: ['2-endpoint', '10-endpoint'],
-      //text: 'Connect terminal 2 to terminal 10.',
-      audio: AI_GUIDE_AUDIO.connect2To10,
+      key: 'rn-3-9',
+      terminals: ['3-endpoint', '9-endpoint'],
+      text: 'Connect digital multimeter terminal 3 to terminal 9.',
+      audio: AI_GUIDE_AUDIO.connectMultimeter,
     },
     {
-      key: 'case1-17-18',
-      terminals: ['17-endpoint', '18-endpoint'],
-      //text: 'Short voltage source terminals 17 to 18.',
-      audio: AI_GUIDE_AUDIO.short17To18,
-    },
-    {
-      key: 'case1-3-11',
-      terminals: ['3-endpoint', '11-endpoint'],
-      //text: 'Connect terminal 3 to terminal 11.',
-      audio: AI_GUIDE_AUDIO.connect3To11,
-    },
-    {
-      key: 'case1-4-12',
-      terminals: ['4-endpoint', '12-endpoint'],
-      //text: 'Connect terminal 4 to terminal 12.',
-      audio: AI_GUIDE_AUDIO.connect4To12,
-    },
-    {
-      key: 'case1-5-13',
-      terminals: ['5-endpoint', '13-endpoint'],
-      //text: 'Connect terminal 5 to terminal 13.',
-      audio: AI_GUIDE_AUDIO.connect5To13,
-    },
-    {
-      key: 'case1-6-14',
-      terminals: ['6-endpoint', '14-endpoint'],
-      //text: 'Connect terminal 6 to terminal 14.',
-      audio: AI_GUIDE_AUDIO.connect6To14,
-    },
-    {
-      key: 'case1-7-15',
-      terminals: ['7-endpoint', '15-endpoint'],
-      //text: 'Connect terminal 7 to terminal 15.',
-      audio: AI_GUIDE_AUDIO.connect7To15,
-    },
-    {
-      key: 'case1-8-16',
-      terminals: ['8-endpoint', '16-endpoint'],
-      //text: 'Connect terminal 8 to terminal 16.',
-     audio: AI_GUIDE_AUDIO.connect8To16,
+      key: 'rn-4-11',
+      terminals: ['4-endpoint', '11-endpoint'],
+      text: 'Connect digital multimeter terminal 4 to terminal 11.',
+      audio: AI_GUIDE_AUDIO.connectMultimeterReturn,
     },
   ],
-
-  case2: [
+  isc: [
     {
-      key: 'case2-17-19',
-      terminals: ['17-endpoint', '19-endpoint'],
-      text: "Let's start with case-2 connection",
-      audio: AI_GUIDE_AUDIO.connect17To19,
+      key: 'isc-5-7',
+      terminals: ['5-endpoint', '7-endpoint'],
+      text: 'Connect power-supply terminal 5 to terminal 7.',
+      audio: AI_GUIDE_AUDIO.connectPowerSupplyPositive,
     },
     {
-      key: 'case2-18-20',
-      terminals: ['18-endpoint', '20-endpoint'],
-      //text: 'Connect terminal 18 to terminal 20.',
-      audio: AI_GUIDE_AUDIO.connect18To20,
+      key: 'isc-6-8',
+      terminals: ['6-endpoint', '8-endpoint'],
+      text: 'Connect power-supply terminal 6 to terminal 8.',
+      audio: AI_GUIDE_AUDIO.connectPowerSupplyNegative,
+    },
+    {
+      key: 'isc-1-9',
+      terminals: ['1-endpoint', '9-endpoint'],
+      text: 'Connect ammeter terminal 1 to terminal 9.',
+      audio: AI_GUIDE_AUDIO.connectAmmeter,
+    },
+    {
+      key: 'isc-2-11',
+      terminals: ['2-endpoint', '11-endpoint'],
+      text: 'Connect ammeter terminal 2 to terminal 11.',
+      audio: AI_GUIDE_AUDIO.connectAmmeterReturn,
     },
   ],
-
-  case3: [
+  il: [
     {
-      key: 'case3-1-9',
-      terminals: ['1-endpoint', '9-endpoint'],
-      text: "Let's start with case-3 connection",
-      audio: AI_GUIDE_AUDIO.correctConnection1To9,
-    },
-    {
-      key: 'case3-2-10',
+      key: 'il-2-10',
       terminals: ['2-endpoint', '10-endpoint'],
-      //text: 'Connect terminal 2 to terminal 10.',
-      audio: AI_GUIDE_AUDIO.connect2To10,
+      text: 'Connect ammeter terminal 2 to terminal 10.',
+      audio: AI_GUIDE_AUDIO.connectAmmeterToLoad,
     },
-    
+    {
+      key: 'il-11-12',
+      terminals: ['11-endpoint', '12-endpoint'],
+      text: 'Connect terminal 11 to terminal 12.',
+      audio: AI_GUIDE_AUDIO.connectLoadReturn,
+    },
   ],
 }
 const BASE_WIDTH = 1440
@@ -423,6 +435,7 @@ const [sourcesLocked, setSourcesLocked] = useState(false)
 const [calculationResetTrigger, setCalculationResetTrigger] = useState(0)
 const [showFormulaPanel, setShowFormulaPanel] = useState(false)
 const [aiGuideEnabled, setAiGuideEnabled] = useState(false)
+const aiGuideEnabledRef = useRef(false)
 const [activeGuideTerminals, setActiveGuideTerminals] = useState([])
 const [manualGuideCase, setManualGuideCase] = useState(null)
 const [manualGuideIndex, setManualGuideIndex] = useState(0)
@@ -528,21 +541,6 @@ useEffect(() => {
 
     return () => resizeObserver.disconnect()
   }, [])
-  /*useEffect(() => {
-  const handleComplete = () => {
-    if (!aiGuideEnabled) return
-
-    playAiGuideAudio(AI_GUIDE_AUDIO.walkthroughComplete, true, () => {
-      playAiGuideAudio(AI_GUIDE_AUDIO.chooseAutoOrManual, true, () => {
-        startManualConnectionGuide('case1')
-      })
-    })
-  }
-
-  window.addEventListener('walkthrough-complete', handleComplete)
-  return () => window.removeEventListener('walkthrough-complete', handleComplete)
-}, [aiGuideEnabled, playAiGuideAudio])*/
-
  const handleResistanceCommit = (key) => {
   touchedResistorsRef.current.add(key)
 
@@ -563,6 +561,14 @@ useEffect(() => {
   setStatus(
     'Resistance values set. Make the Case 1 connections to measure RN.',
   )
+
+  if (
+    aiGuideEnabled &&
+    !case1IntroSpokenRef.current
+  ) {
+    case1IntroSpokenRef.current = true
+    beginRnConnectionGuide()
+  }
 }
 const normalizePair = (a, b) => [a, b].sort().join('|')
 
@@ -581,6 +587,15 @@ const isSamePair = (firstPair, secondPair) => (
     normalizeTerminalId(secondPair[1]),
   )
 )
+
+const clearManualConnectionGuide = () => {
+  setActiveGuideTerminals([])
+  setManualGuideCase(null)
+  setManualGuideIndex(0)
+  manualGuideCaseRef.current = null
+  manualGuideIndexRef.current = 0
+}
+
 const getCurrentManualGuideStep = () => {
   const caseKey = manualGuideCaseRef.current
   const index = manualGuideIndexRef.current
@@ -589,7 +604,11 @@ const getCurrentManualGuideStep = () => {
 
   return AI_GUIDE_CONNECTION_STEPS[caseKey]?.[index] ?? null
 }
-const startManualConnectionGuide = (caseKey) => {
+const startManualConnectionGuide = (
+  caseKey,
+  introAudio = null,
+  force = false,
+) => {
   stopAiGuideAudio()
   const firstStep = AI_GUIDE_CONNECTION_STEPS[caseKey]?.[0]
 
@@ -598,18 +617,23 @@ const startManualConnectionGuide = (caseKey) => {
   setManualGuideCase(caseKey)
   setManualGuideIndex(0)
   manualGuideCaseRef.current = caseKey
-manualGuideIndexRef.current = 0
+  manualGuideIndexRef.current = 0
   setActiveGuideTerminals(firstStep.terminals)
 
-  showAlertWithOptionalAudio(
-    {
-      title: 'AI Guide Connection Step',
-      description: firstStep.text,
-      type: 'info',
-      icon: '🤖',
-    },
-    firstStep.audio
-  )
+  const playFirstStep = () => {
+    playAiGuideAudio(firstStep.audio, force)
+  }
+
+  if (introAudio) {
+    playAiGuideAudio(
+      introAudio,
+      force,
+      playFirstStep,
+    )
+    return
+  }
+
+  playFirstStep()
 }
 
 const repeatManualConnectionStep = (step) => {
@@ -636,25 +660,15 @@ const advanceManualConnectionStep = () => {
   })
 
   if (!nextStep) {
-    setActiveGuideTerminals([])
-    setManualGuideCase(null)
-    setManualGuideIndex(0)
-    manualGuideCaseRef.current = null
-    manualGuideIndexRef.current = 0
+    clearManualConnectionGuide()
 
-    /*showAlertWithOptionalAudio({
-      title: 'Connections Completed',
-      description: 'Required manual connections are completed. Click CHECK to verify the connections.',
-      type: 'success',
-      icon: '✅',
-    }, null)*/
-    if (caseKey === 'case1') {
-  playAiGuideAudio(AI_GUIDE_AUDIO.allConnectionsComplete)
-} else if (caseKey === 'case2') {
-  playAiGuideAudio(AI_GUIDE_AUDIO.allConnectionsComplete2)
-} else if (caseKey === 'case3') {
-  playAiGuideAudio(AI_GUIDE_AUDIO.allConnectionsComplete3)
-}
+    playAiGuideAudio(
+      caseKey === 'rn'
+        ? AI_GUIDE_AUDIO.allConnectionsComplete
+        : caseKey === 'il'
+          ? AI_GUIDE_AUDIO.checkThirdCase
+          : AI_GUIDE_AUDIO.checkCaseTwoOrThree,
+    )
     return
   }
 
@@ -663,13 +677,6 @@ const advanceManualConnectionStep = () => {
   setActiveGuideTerminals([...nextStep.terminals])
 
   playAiGuideAudio(nextStep.audio)
-
-  /*showAlertWithOptionalAudio({
-    title: 'Next Connection',
-    description: nextStep.text,
-    type: 'info',
-    icon: '🤖',
-  }, nextStep.audio)*/
 }
 
 const requiredCase1Removals = new Set([
@@ -791,39 +798,68 @@ const playAiGuideAudio = useCallback(
   [aiGuideEnabled],
 )
 
-const playAiGuideAudioAndWait = useCallback(
-  (audioPath, force = false) => (
-    new Promise((resolve) => {
-      let settled = false
+const playAiGuideAudioThen = (
+  audioPath,
+  next,
+  force = false,
+) => {
+  playAiGuideAudio(
+    audioPath,
+    force,
+    next,
+  )
+}
 
-      const finish = () => {
-        if (settled) return
-
-        settled = true
-        resolve()
-      }
-
-      playAiGuideAudio(
-        audioPath,
+const beginRnConnectionGuide = (force = false) => {
+  playAiGuideAudioThen(
+    AI_GUIDE_AUDIO.resistanceReady,
+    () => {
+      playAiGuideAudioThen(
+        AI_GUIDE_AUDIO.nortonResistanceIntro,
+        () => {
+          playAiGuideAudioThen(
+            AI_GUIDE_AUDIO.chooseConnectionMode,
+            () => {
+              startManualConnectionGuide(
+                'rn',
+                null,
+                force,
+              )
+            },
+            force,
+          )
+        },
         force,
-        finish,
-        finish,
       )
-    })
-  ),
-  [playAiGuideAudio],
-)
+    },
+    force,
+  )
+}
 
+const beginIscConnectionGuide = (force = false) => {
+  startManualConnectionGuide(
+    'isc',
+    AI_GUIDE_AUDIO.secondCasePowerSupply,
+    force,
+  )
+}
 
+const beginIlConnectionGuide = (force = false) => {
+  startManualConnectionGuide(
+    'il',
+    AI_GUIDE_AUDIO.thirdCaseAmmeter,
+    force,
+  )
+}
 
-const playGuideAudio = useCallback((key, audioPath) => {
-  if (!aiGuideEnabled || !audioPath) return
+const beginThirdCaseGuide = (force = false) => {
+  playAiGuideAudioThen(
+    AI_GUIDE_AUDIO.continueWithAutoConnect,
+    () => beginIlConnectionGuide(force),
+    force,
+  )
+}
 
-  if (lastGuideMessageRef.current === key) return
-  lastGuideMessageRef.current = key
-
-  playAiGuideAudio(audioPath)
-}, [aiGuideEnabled, playAiGuideAudio])
 useEffect(() => {
   const handleComplete = () => {
     setHighlightWalkthrough(false)
@@ -848,28 +884,73 @@ useEffect(() => {
     )
   }
 }, [aiGuideEnabled, playAiGuideAudio])
-const showGuideAlert = useCallback((key, audioPath) => {
-  if (!aiGuideEnabled || !audioPath) return
-
-  if (lastGuideMessageRef.current === key) return
-  lastGuideMessageRef.current = key
-
-  playAiGuideAudio(audioPath)
-}, [aiGuideEnabled, playAiGuideAudio])
 const showAlertWithOptionalAudio = useCallback(
-(alert,audioPath)=>{
+  (alert, audioPath, options = {}) => {
+    // Operation alerts narrate independently of the optional walkthrough.
+    // Direct playAiGuideAudio calls remain controlled by the AI Guide toggle.
+    const shouldNarrate = Boolean(audioPath)
+    let completeNarration
+    const narrationCompletion = shouldNarrate
+      ? new Promise((resolve) => {
+          completeNarration = resolve
+        })
+      : null
+    const audioDuration = shouldNarrate
+      ? AI_GUIDE_AUDIO_DURATION_MS.get(audioPath)
+      : null
 
-showStepAlert({
-...alert,
-target:null,
-})
+    return showStepAlert({
+      ...alert,
+      duration:
+        audioDuration ?? alert.duration,
+      completionPromise: narrationCompletion,
+      target: null,
+      onShow: (shownAlert) => {
+        alert.onShow?.(shownAlert)
 
-if(audioPath){
-playAiGuideAudio(audioPath)
-}
+        if (shouldNarrate) {
+          playAiGuideAudio(
+            audioPath,
+            true,
+            () => {
+              options.onAudioEnd?.()
+              completeNarration?.()
+            },
+            () => {
+              completeNarration?.()
+            },
+          )
+        }
+      },
+      onDismissStart: (reason, dismissedAlert) => {
+        alert.onDismissStart?.(
+          reason,
+          dismissedAlert,
+        )
 
-},
-[showStepAlert,playAiGuideAudio]
+        if (
+          shouldNarrate &&
+          currentAudioPathRef.current === audioPath
+        ) {
+          stopAiGuideAudio(
+            `alert-${reason}`,
+          )
+        }
+      },
+      onClose: (reason, dismissedAlert) => {
+        alert.onClose?.(reason, dismissedAlert)
+        options.onAlertClose?.(
+          reason,
+          dismissedAlert,
+        )
+      },
+    })
+  },
+  [
+    playAiGuideAudio,
+    showStepAlert,
+    stopAiGuideAudio,
+  ],
 )
 
 const speakCurrentInstruction = useCallback(
@@ -974,14 +1055,27 @@ const canAddReading =
       'RN reading saved. Remove connections 7–8, 3–9 and 4–11.',
     )
 
-    showAlertWithOptionalAudio({
-      title: 'Norton Resistance Added',
-      description:
-        'RN has been recorded. Remove connections 7–8, 3–9 and 4–11 without resetting the experiment.',
-      type: 'success',
-      icon: '✅',
-      target: '#observation-table-panel',
-    })
+    showAlertWithOptionalAudio(
+      {
+        title: 'Norton Resistance Added',
+        description:
+          'RN has been recorded. Remove connections 7–8, 3–9 and 4–11 without resetting the experiment.',
+        type: 'success',
+        icon: '✅',
+        target: '#observation-table-panel',
+      },
+      AI_GUIDE_AUDIO.rnReadingAdded,
+      {
+        onAlertClose: (reason) => {
+          if (
+            reason === 'timeout' &&
+            aiGuideEnabledRef.current
+          ) {
+            beginIscConnectionGuide()
+          }
+        },
+      },
+    )
 
     return
   }
@@ -1044,14 +1138,27 @@ const canAddReading =
       'Isc reading saved and the power supply switched OFF. Remove connection 2–11 or use AUTO CONNECT for Case 3.',
     )
 
-    showAlertWithOptionalAudio({
-      title: 'Short-Circuit Current Added',
-      description:
-        'Isc has been recorded and the power supply is OFF. Remove only connection 2–11 or use AUTO CONNECT for the Case 3 load-current wiring.',
-      type: 'success',
-      icon: '✅',
-      target: '#observation-table-panel',
-    })
+    showAlertWithOptionalAudio(
+      {
+        title: 'Short-Circuit Current Added',
+        description:
+          'Isc has been recorded and the power supply is OFF. Remove only connection 2–11 or use AUTO CONNECT for the Case 3 load-current wiring.',
+        type: 'success',
+        icon: '✅',
+        target: '#observation-table-panel',
+      },
+      AI_GUIDE_AUDIO.secondReadingAdded,
+      {
+        onAlertClose: (reason) => {
+          if (
+            reason === 'timeout' &&
+            aiGuideEnabledRef.current
+          ) {
+            beginThirdCaseGuide()
+          }
+        },
+      },
+    )
 
     return
   }
@@ -1131,14 +1238,17 @@ const canAddReading =
       'IL reading saved. Click CALCULATE to verify Norton’s theorem.',
     )
 
-    showAlertWithOptionalAudio({
-      title: 'Final Reading Added',
-      description:
-        NORTON_ALERT_MESSAGES.finalReadingAdded,
-      type: 'success',
-      icon: '✅',
-      target: '#calculate-button',
-    }, AI_GUIDE_AUDIO.afterReadingCase3)
+    showAlertWithOptionalAudio(
+      {
+        title: 'Final Reading Added',
+        description:
+          NORTON_ALERT_MESSAGES.finalReadingAdded,
+        type: 'success',
+        icon: '✅',
+        target: '#calculate-button',
+      },
+      AI_GUIDE_AUDIO.thirdReadingAdded,
+    )
   }
 }
 
@@ -1154,10 +1264,13 @@ const canAddReading =
   )
 
   setAiGuideEnabled(false)
+  aiGuideEnabledRef.current = false
   window.speechSynthesis?.cancel()
 
   aiGuideJustEnabledRef.current = false
   lastGuideMessageRef.current = ''
+  case1IntroSpokenRef.current = false
+  clearManualConnectionGuide()
 
   setPowerOn(false)
   setVoltage(0)
@@ -1275,11 +1388,12 @@ setConnectionsLocked(false)
     })
     return
   }
-playGuideAudio(
-  'print-guide',
-  AI_GUIDE_AUDIO.print
-)
-  window.print()
+
+  playAiGuideAudio(
+    AI_GUIDE_AUDIO.print,
+    true,
+    () => window.print(),
+  )
 }
 const handleCalculate = () => {
   if (readingCount < 3) {
@@ -1318,23 +1432,19 @@ const handleCalculate = () => {
         icon: 'ℹ️',
         dedupeKey: `calculate-alert-${Date.now()}`,
       },
-      AI_GUIDE_AUDIO.afterCalculate
+      AI_GUIDE_AUDIO.calculationReady,
     )
   }, 300)
 }
-const handleAiGuide = useCallback(() => {
+const handleAiGuide = () => {
   if (aiGuideEnabled) {
     stopAiGuideAudio('guide-disabled')
     window.speechSynthesis?.cancel()
 
     setAiGuideEnabled(false)
+    aiGuideEnabledRef.current = false
     setHighlightWalkthrough(false)
-    setActiveGuideTerminals([])
-    setManualGuideCase(null)
-    setManualGuideIndex(0)
-
-    manualGuideCaseRef.current = null
-    manualGuideIndexRef.current = 0
+    clearManualConnectionGuide()
 
     lastGuideMessageRef.current = ''
     lastInstructionAudioRef.current = ''
@@ -1345,6 +1455,7 @@ const handleAiGuide = useCallback(() => {
   }
 
   setAiGuideEnabled(true)
+  aiGuideEnabledRef.current = true
 
   lastGuideMessageRef.current = ''
   lastInstructionAudioRef.current = ''
@@ -1354,27 +1465,29 @@ const handleAiGuide = useCallback(() => {
   playAiGuideAudio(
     AI_GUIDE_AUDIO.aiGuideClick,
     true,
+    () => {
+      if (!resistanceSet) return
+
+      if (currentCase === 'rn') {
+        case1IntroSpokenRef.current = true
+        beginRnConnectionGuide(true)
+        return
+      }
+
+      if (currentCase === 'isc') {
+        beginIscConnectionGuide(true)
+        return
+      }
+
+      beginThirdCaseGuide(true)
+    },
   )
 
   window.setTimeout(() => {
     aiGuideJustEnabledRef.current = false
   }, 1200)
-}, [
-  aiGuideEnabled,
-  playAiGuideAudio,
-  stopAiGuideAudio,
-])
-const handleWalkthroughComplete = () => {
-  if (!aiGuideEnabled) return
-
-  stopAiGuideAudio()
-
-  playAiGuideAudio(
-    AI_GUIDE_AUDIO.walkthroughComplete,
-    true
-  )
 }
-  const handleGenerateReport = async () => {
+  const handleGenerateReport = () => {
   console.log('GENERATE REPORT CLICKED', {
     aiGuideEnabled,
     readingCount,
@@ -1396,22 +1509,6 @@ const handleWalkthroughComplete = () => {
     { caseName: 'Both Sources Active', ...observations.bothSources },
   ]
 
-  if (aiGuideEnabled) {
-  await playAiGuideAudioAndWait(
-    AI_GUIDE_AUDIO.report,
-    true,
-  )
-}
-  const confirmed = await confirmAlert({
-    title: 'Generate Report',
-    description:
-      NORTON_ALERT_MESSAGES.reportGenerated,
-    type: 'success',
-    icon: '📄',
-  })
-
-  if (confirmed === false) return
-
   const generated = generateSuperpositionReport({
   observations: reportObservations,
   resistances: { r1, r2, r3 },
@@ -1427,6 +1524,16 @@ const handleWalkthroughComplete = () => {
 
   setReportGenerated(true)
   setStatus('Superposition theorem report generated successfully.')
+  showAlertWithOptionalAudio(
+    {
+      title: 'Report Generated',
+      description:
+        NORTON_ALERT_MESSAGES.reportGenerated,
+      type: 'success',
+      icon: '📄',
+    },
+    AI_GUIDE_AUDIO.report,
+  )
 }
 
   const scaledWidth = Math.ceil(BASE_WIDTH * scale)
@@ -1446,6 +1553,21 @@ const handleConnectionAdded = (
   targetId,
 ) => {
   setConnectionsVerified(false)
+
+  const guideStep = getCurrentManualGuideStep()
+
+  if (aiGuideEnabled && guideStep) {
+    if (
+      isSamePair(
+        [sourceId, targetId],
+        guideStep.terminals,
+      )
+    ) {
+      advanceManualConnectionStep()
+    } else {
+      repeatManualConnectionStep(guideStep)
+    }
+  }
 
   if (
     currentCase === 'isc'
@@ -1536,24 +1658,49 @@ const handleConnectionDetached = (
 
       const hasConnections = actualConnections.length > 0
 
+      const requiredKeys = new Set(
+        requiredConnections.map(toPairKey),
+      )
+      const actualKeys = new Set(
+        actualConnections.map(toPairKey),
+      )
+      const issueCount = (
+        actualConnections.filter(
+          (connection) =>
+            !requiredKeys.has(toPairKey(connection)),
+        ).length +
+        requiredConnections.filter(
+          (connection) =>
+            !actualKeys.has(toPairKey(connection)),
+        ).length
+      )
+      const connectionErrorAudio = !hasConnections
+        ? null
+        : issueCount > 1
+          ? AI_GUIDE_AUDIO.multipleWrongConnections
+          : AI_GUIDE_AUDIO.wrongConnection
+
       const description =
         buildConnectionAlertDescription(
           actualConnections,
           requiredConnections,
         )
 
-      showAlertWithOptionalAudio({
-        title: hasConnections
-          ? 'Invalid Connections'
-          : 'Connections Required',
-        description:
-          hasConnections
-            ? description || 'One or more connections are incorrect or missing.'
-            : NORTON_ALERT_MESSAGES.connectionsRequired,
-        type: hasConnections ? 'error' : 'warning',
-        icon: '❌',
-        target: '#circuit-panel',
-      })
+      showAlertWithOptionalAudio(
+        {
+          title: hasConnections
+            ? 'Invalid Connections'
+            : 'Connections Required',
+          description:
+            hasConnections
+              ? description || 'One or more connections are incorrect or missing.'
+              : NORTON_ALERT_MESSAGES.connectionsRequired,
+          type: hasConnections ? 'error' : 'warning',
+          icon: '❌',
+          target: '#circuit-panel',
+        },
+        connectionErrorAudio,
+      )
 
       setStatus(
         'Invalid connections. Remove incorrect wires and reconnect the required terminals.',
@@ -1574,14 +1721,17 @@ const handleConnectionDetached = (
         'RN connections verified. Keep the power supply OFF and click ADD.',
       )
 
-      showAlertWithOptionalAudio({
-        title: 'Connections Verified',
-        description:
-          NORTON_ALERT_MESSAGES.rnVerified,
-        type: 'success',
-        icon: '✅',
-        target: '#digital-multimeter',
-      })
+      showAlertWithOptionalAudio(
+        {
+          title: 'Connections Verified',
+          description:
+            NORTON_ALERT_MESSAGES.rnVerified,
+          type: 'success',
+          icon: '✅',
+          target: '#digital-multimeter',
+        },
+        AI_GUIDE_AUDIO.firstCaseChecked,
+      )
 
       return
     }
@@ -1595,14 +1745,17 @@ const handleConnectionDetached = (
         'Isc connections verified. Turn ON the power supply and set the voltage.',
       )
 
-      showAlertWithOptionalAudio({
-        title: 'Connections Verified',
-        description:
-          NORTON_ALERT_MESSAGES.iscVerified,
-        type: 'success',
-        icon: '✅',
-        target: '#power-supply',
-      })
+      showAlertWithOptionalAudio(
+        {
+          title: 'Connections Verified',
+          description:
+            NORTON_ALERT_MESSAGES.iscVerified,
+          type: 'success',
+          icon: '✅',
+          target: '#power-supply',
+        },
+        AI_GUIDE_AUDIO.secondCaseChecked,
+      )
 
       return
     }
@@ -1620,16 +1773,21 @@ const handleConnectionDetached = (
           : 'IL connections verified. Turn ON the power supply and use the same voltage.',
       )
 
-      showAlertWithOptionalAudio({
-        title: 'Connections Verified',
-        description:
-          powerOn
-            ? NORTON_ALERT_MESSAGES.ilReadingDisplayed
-            : NORTON_ALERT_MESSAGES.ilVerified,
-        type: 'success',
-        icon: '✅',
-        target: powerOn ? '#ammeter-a' : '#power-supply',
-      })
+      showAlertWithOptionalAudio(
+        {
+          title: 'Connections Verified',
+          description:
+            powerOn
+              ? NORTON_ALERT_MESSAGES.ilReadingDisplayed
+              : NORTON_ALERT_MESSAGES.ilVerified,
+          type: 'success',
+          icon: '✅',
+          target: powerOn ? '#ammeter-a' : '#power-supply',
+        },
+        powerOn
+          ? AI_GUIDE_AUDIO.thirdCasePowerOn
+          : null,
+      )
     }
   },
   [
@@ -1647,7 +1805,7 @@ const handleConnectionDetached = (
       type: 'warning',
       icon: '⚠️',
       target: '#resistance-controls',
-    }, AI_GUIDE_AUDIO.beforeResistance)
+    }, AI_GUIDE_AUDIO.resistanceRequired)
 
     return
   }
@@ -1667,6 +1825,14 @@ const handleConnectionDetached = (
 
   setConnectionsVerified(false)
   setConnectionsLocked(false)
+
+  if (currentCase !== 'rn') {
+    playAiGuideAudio(
+      currentCase === 'il'
+        ? AI_GUIDE_AUDIO.checkThirdCase
+        : AI_GUIDE_AUDIO.checkCaseTwoOrThree,
+    )
+  }
 
   setCheckRequest(
     (current) => current + 1,
@@ -1688,10 +1854,6 @@ const handleConnectionDetached = (
   },
   'Please check the connections first.'
 )*/
-playAiGuideAudio(
-AI_GUIDE_AUDIO.beforeCheckingCurrentSource,
-true
-)
     return
   }
 
@@ -1701,10 +1863,6 @@ true
       description: 'Both sources should be switched ON only after completing individual source cases.',
       type: 'warning',
     })*/
-    playAiGuideAudio(
-      AI_GUIDE_AUDIO.wrongSourceCombination,
-      true
-    )
     return
   }
 
@@ -1728,13 +1886,6 @@ if (isCase3InProgress) {
   }
 
   setInstructionStep('case3-turn-on-both')
-
-  if (powerOn) {
-    showGuideAlert(
-  'both-sources-on',
-  AI_GUIDE_AUDIO.bothSourcesOn
-)
-  }
 
   return
 }
@@ -1807,7 +1958,7 @@ setStatus('Current source switched on. Adjust current and add the reading.')
           type: 'success',
           target: '#ammeter-a',
         },
-        AI_GUIDE_AUDIO.voltageValueSet,
+        AI_GUIDE_AUDIO.voltageReady,
       )
     }
   }
@@ -1827,7 +1978,7 @@ setStatus('Current source switched on. Adjust current and add the reading.')
         type: 'success',
         target: '#ammeter-a',
       },
-      AI_GUIDE_AUDIO.bothSourcesOn,
+      AI_GUIDE_AUDIO.thirdCasePowerOn,
     )
   }
 }
@@ -1864,7 +2015,7 @@ const handleAutoConnectComplete = useCallback((result) => {
         type: 'success',
         target: '#digital-multimeter',
       },
-      AI_GUIDE_AUDIO.autoConnect,
+      AI_GUIDE_AUDIO.firstCaseAutoConnected,
     )
 
     return
@@ -1884,7 +2035,7 @@ const handleAutoConnectComplete = useCallback((result) => {
         type: 'success',
         target: '#power-supply',
       },
-      AI_GUIDE_AUDIO.autoConnect,
+      AI_GUIDE_AUDIO.secondCaseAutoConnected,
     )
 
     return
@@ -1903,7 +2054,7 @@ const handleAutoConnectComplete = useCallback((result) => {
         type: 'success',
         target: '#power-supply',
       },
-      AI_GUIDE_AUDIO.autoConnect,
+      AI_GUIDE_AUDIO.thirdCaseAutoConnected,
     )
   }
 }, [showAlertWithOptionalAudio])
@@ -1916,7 +2067,7 @@ const handleAutoConnectComplete = useCallback((result) => {
         NORTON_ALERT_MESSAGES.resistanceRequired,
       type: 'warning',
       target: '#resistance-controls',
-    }, AI_GUIDE_AUDIO.beforeResistance)
+    }, AI_GUIDE_AUDIO.resistanceRequired)
 
     return
   }
@@ -1959,6 +2110,8 @@ const handleAutoConnectComplete = useCallback((result) => {
 
   setConnectionsVerified(false)
   setConnectionsLocked(false)
+  clearManualConnectionGuide()
+  stopAiGuideAudio('auto-connect-started')
   setInstructionStep(
     instructionByCase[currentCase],
   )
@@ -1999,7 +2152,7 @@ const handleAutoConnectComplete = useCallback((result) => {
           type: 'success',
           target: '#ammeter-a',
         },
-        AI_GUIDE_AUDIO.voltageValueSet,
+        AI_GUIDE_AUDIO.voltageReady,
       )
     }
 
@@ -2317,6 +2470,9 @@ const handleAutoConnectComplete = useCallback((result) => {
   }
   onPlayAiGuideAudio={
     playAiGuideAudio
+  }
+  onShowAlertWithAudio={
+    showAlertWithOptionalAudio
   }
   aiGuideAudio={AI_GUIDE_AUDIO}
   onVerificationComplete={(rows) => {

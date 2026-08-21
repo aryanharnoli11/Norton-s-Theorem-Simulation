@@ -85,6 +85,7 @@ const CalculationPanel = ({
   calculationResetTrigger,
   setInstructionStep,
   onPlayAiGuideAudio,
+  onShowAlertWithAudio,
   aiGuideAudio,
 }) => {
 
@@ -201,12 +202,30 @@ const handleVerify = () => {
   }
 
   if (!hasNortonInputs) {
-    setVerificationMessage(
-      'Please enter IN, RN and RL.',
-    )
+    const missingInputCount =
+      Object.values(nortonInputs).filter(
+        (value) => value.trim() === '',
+      ).length
+    const missingMessage = missingInputCount === 1
+      ? 'Please enter the one missing value before verification.'
+      : 'Please enter all missing values before verification.'
+
+    setVerificationMessage(missingMessage)
 
     setVerificationStatus('error')
     onVerificationComplete?.([])
+
+    onShowAlertWithAudio?.(
+      {
+        title: 'Missing Calculation Value',
+        description: missingMessage,
+        type: 'warning',
+        target: '#calculation-panel',
+      },
+      missingInputCount === 1
+        ? aiGuideAudio?.verifyOneMissing
+        : aiGuideAudio?.verifyMultipleMissing,
+    )
 
     return
   }
@@ -218,6 +237,17 @@ const handleVerify = () => {
 
     setVerificationStatus('error')
     onVerificationComplete?.([])
+
+    onShowAlertWithAudio?.(
+      {
+        title: 'Invalid Calculation Values',
+        description:
+          'Please enter valid Norton current and resistance values.',
+        type: 'error',
+        target: '#calculation-panel',
+      },
+      aiGuideAudio?.verifyIncorrect,
+    )
 
     return
   }
@@ -282,9 +312,22 @@ const handleVerify = () => {
       'verified',
     )
 
-    onPlayAiGuideAudio?.(
-      aiGuideAudio?.verifyCorrect,
-    )
+    if (onShowAlertWithAudio) {
+      onShowAlertWithAudio(
+        {
+          title: "Norton's Theorem Verified",
+          description:
+            'The calculated load current matches the observed value.',
+          type: 'success',
+          target: '#calculation-panel',
+        },
+        aiGuideAudio?.verifyCorrect,
+      )
+    } else {
+      onPlayAiGuideAudio?.(
+        aiGuideAudio?.verifyCorrect,
+      )
+    }
 
   } else {
 
@@ -298,9 +341,22 @@ const handleVerify = () => {
       'calculation-enter-value',
     )
 
-    onPlayAiGuideAudio?.(
-      aiGuideAudio?.verifyIncorrect,
-    )
+    if (onShowAlertWithAudio) {
+      onShowAlertWithAudio(
+        {
+          title: 'Calculation Does Not Match',
+          description:
+            'The calculated load current does not match the observed value. Check the entered values and try again.',
+          type: 'error',
+          target: '#calculation-panel',
+        },
+        aiGuideAudio?.verifyIncorrect,
+      )
+    } else {
+      onPlayAiGuideAudio?.(
+        aiGuideAudio?.verifyIncorrect,
+      )
+    }
   }
 
 

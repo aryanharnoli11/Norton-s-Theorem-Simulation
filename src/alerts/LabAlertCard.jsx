@@ -13,6 +13,8 @@ const dispatchLabAlertEvent = (eventName, detail) => {
 const LabAlertCard = ({ alert, onDismiss }) => {
   const [isClosing, setIsClosing] = useState(false)
   const dismissTimerRef = useRef(null)
+  const dismissalStartedRef = useRef(false)
+  const hasShownRef = useRef(false)
   const {
     canGoNext,
     canGoPrevious,
@@ -33,7 +35,15 @@ const LabAlertCard = ({ alert, onDismiss }) => {
     tutorialMode,
     type,
   } = alert
-  const hasProgressTimer = !requiresConfirmation && Number.isFinite(duration) && duration > 0
+  const waitsForCompletion = Boolean(
+    alert.completionPromise &&
+    typeof alert.completionPromise.then === 'function',
+  )
+  const hasProgressTimer =
+    !requiresConfirmation &&
+    !waitsForCompletion &&
+    Number.isFinite(duration) &&
+    duration > 0
   const titleId = `lab-alert-title-${id}`
   const descriptionId = `lab-alert-description-${id}`
   const role = type === 'error' || type === 'warning' ? 'alert' : 'status'
@@ -41,10 +51,12 @@ const LabAlertCard = ({ alert, onDismiss }) => {
   const showTutorialControls = Boolean(tutorialMode || onNext || onPrevious)
 
   const dismiss = useCallback((reason = 'dismiss', callClose = true) => {
-    if (isClosing) {
+    if (dismissalStartedRef.current) {
       return
     }
 
+    dismissalStartedRef.current = true
+    alert.onDismissStart?.(reason, alert)
     setIsClosing(true)
 
     dismissTimerRef.current = window.setTimeout(() => {
@@ -54,7 +66,7 @@ const LabAlertCard = ({ alert, onDismiss }) => {
 
       onDismiss(id)
     }, EXIT_DURATION)
-  }, [alert, id, isClosing, onDismiss])
+  }, [alert, id, onDismiss])
 
   useEffect(() => {
     dispatchLabAlertEvent('lab-alert:sound', {
@@ -67,6 +79,33 @@ const LabAlertCard = ({ alert, onDismiss }) => {
   }, [alert.sound, id, stepNumber, title, type])
 
   useEffect(() => {
+    if (hasShownRef.current) {
+      return
+    }
+
+    hasShownRef.current = true
+    alert.onShow?.(alert)
+  }, [alert])
+
+  useEffect(() => {
+    if (waitsForCompletion) {
+      let isActive = true
+      const finish = () => {
+        if (isActive) {
+          dismiss('timeout')
+        }
+      }
+
+      Promise.resolve(alert.completionPromise).then(
+        finish,
+        finish,
+      )
+
+      return () => {
+        isActive = false
+      }
+    }
+
     if (!hasProgressTimer) {
       return undefined
     }
@@ -76,7 +115,7 @@ const LabAlertCard = ({ alert, onDismiss }) => {
     }, duration)
 
     return () => window.clearTimeout(timer)
-  }, [dismiss, duration, hasProgressTimer])
+  }, [alert.completionPromise, dismiss, duration, hasProgressTimer, waitsForCompletion])
 
   useEffect(() => () => {
     if (dismissTimerRef.current) {
@@ -85,8 +124,8 @@ const LabAlertCard = ({ alert, onDismiss }) => {
   }, [])
 
   const handleConfirm = () => {
-    onConfirm?.(alert)
     dismiss('confirm', false)
+    onConfirm?.(alert)
   }
 
   const handleOk = () => {
