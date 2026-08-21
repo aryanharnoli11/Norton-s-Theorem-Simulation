@@ -26,92 +26,92 @@ import {
 } from './utils/audioController.js'
 const AI_GUIDE_AUDIO = {
   case1Verified:
-    '/ai-guide-audio/After 1st case connections, check Connections Verified.wav',
+    '/simulation-audios/After 1st case connections, check Connections Verified.wav',
 
   case2Verified:
-    '/ai-guide-audio/After 2nd case connections, check.wav',
+    '/simulation-audios/After 2nd case connections, check.wav',
 
   bothSourcesOn:
-    '/ai-guide-audio/After both sources are ON, Add button.wav',
+    '/simulation-audios/After both sources are ON, Add button.wav',
 
   afterCalculate:
-    '/ai-guide-audio/After clicking the calculate button.wav',
+    '/simulation-audios/After clicking the calculate button.wav',
 
   afterReadingCase1:
-    '/ai-guide-audio/After reading is added for the first case.wav',
+    '/simulation-audios/After reading is added for the first case.wav',
 
   afterReadingCase2:
-    '/ai-guide-audio/After reading is added for the second case.wav',
+    '/simulation-audios/After reading is added for the second case.wav',
 
   afterReadingCase3:
-    '/ai-guide-audio/After reading is added for the third case.wav',
+    '/simulation-audios/After reading is added for the third case.wav',
 
   afterResistanceSet:
-    '/ai-guide-audio/After resistance is set, check button.wav',
+    '/simulation-audios/After resistance is set, check button.wav',
 
   afterAboveStep:
-    '/ai-guide-audio/After the above step.wav',
+    '/simulation-audios/After the above step.wav',
 
   currentValueSet:
-    '/ai-guide-audio/After the current value is set.wav',
+    '/simulation-audios/After the current value is set.wav',
 
   voltageValueSet:
-    '/ai-guide-audio/After the voltage value is set.wav',
+    '/simulation-audios/After the voltage value is set.wav',
 
   autoConnect:
-    '/ai-guide-audio/Autoconnect.wav',
+    '/simulation-audios/Autoconnect.wav',
 
   beforeAdd:
-    '/ai-guide-audio/Before adding reading, 1st time Add button.wav',
+    '/simulation-audios/Before adding reading, 1st time Add button.wav',
 
   beforeResistance:
-    '/ai-guide-audio/Before resistance set, check & auto connect button.wav',
+    '/simulation-audios/Before resistance set, check & auto connect button.wav',
 
   voltageSourceWarning:
-    '/ai-guide-audio/During the 1st case Voltage source Complete Current Source Case First.wav',
+    '/simulation-audios/During the 1st case Voltage source Complete Current Source Case First.wav',
 
   report:
-    '/ai-guide-audio/Generate Report.wav',
+    '/simulation-audios/Generate Report.wav',
 
   case3Verified:
-    '/ai-guide-audio/Now check again for the 3rd case.wav',
+    '/simulation-audios/Now check again for the 3rd case.wav',
 
   print:
-    '/ai-guide-audio/Print.wav',
+    '/simulation-audios/Print.wav',
 
   reset:
-    '/ai-guide-audio/Reset.wav',
-    aiGuideClick: '/ai-guide-audio/AI Guide click.wav',
-walkthroughComplete: '/ai-guide-audio/The simulation walkthrough is now complete.wav',
-chooseAutoOrManual: '/ai-guide-audio/Now, you may either click the Auto Connect button.wav',
+    '/simulation-audios/Reset.wav',
+    aiGuideClick: '/simulation-audios/AI Guide click.wav',
+walkthroughComplete: '/simulation-audios/The simulation walkthrough is now complete.wav',
+chooseAutoOrManual: '/simulation-audios/Now, you may either click the Auto Connect button.wav',
 
-connect5To13: '/ai-guide-audio/Connect terminal 5 to terminal 13.wav',
-connect6To14: '/ai-guide-audio/Connect terminal 6 to terminal 14..wav',
-connect7To15: '/ai-guide-audio/Connect terminal 7 to terminal 15.wav',
-connect8To16: '/ai-guide-audio/Last connect terminal 8 to terminal 16..wav',
-short17To18: '/ai-guide-audio/now short terminal voltage to 17 to 18.wav',
-allConnectionsComplete: '/ai-guide-audio/Guide all complete conn for case 1.wav',
-allConnectionsComplete2: '/ai-guide-audio/Guide all complete conn for case 2.wav',
-allConnectionsComplete3: '/ai-guide-audio/Guide all complete conn for case 3.wav',
-connect17To19:"/ai-guide-audio/After the above steppart1.wav",
-connect18To20:"/ai-guide-audio/After the above step part 2.wav",
-wrongConnection: '/ai-guide-audio/Wrong connection.wav',
-multipleWrongConnections: '/ai-guide-audio/Multiple wrong connections.wav',
+connect5To13: '/simulation-audios/Connect terminal 5 to terminal 13.wav',
+connect6To14: '/simulation-audios/Connect terminal 6 to terminal 14..wav',
+connect7To15: '/simulation-audios/Connect terminal 7 to terminal 15.wav',
+connect8To16: '/simulation-audios/Last connect terminal 8 to terminal 16..wav',
+short17To18: '/simulation-audios/now short terminal voltage to 17 to 18.wav',
+allConnectionsComplete: '/simulation-audios/Guide all complete conn for case 1.wav',
+allConnectionsComplete2: '/simulation-audios/Guide all complete conn for case 2.wav',
+allConnectionsComplete3: '/simulation-audios/Guide all complete conn for case 3.wav',
+connect17To19:"/simulation-audios/After the above steppart1.wav",
+connect18To20:"/simulation-audios/After the above step part 2.wav",
+wrongConnection: '/simulation-audios/Wrong connection.wav',
+multipleWrongConnections: '/simulation-audios/Multiple wrong connections.wav',
 
-verifyCorrect: '/ai-guide-audio/Verify button click, correct calculations.wav',
-verifyIncorrect: '/ai-guide-audio/Verify button click, Incorrect calculations.wav',
+verifyCorrect: '/simulation-audios/Verify button click, correct calculations.wav',
+verifyIncorrect: '/simulation-audios/Verify button click, Incorrect calculations.wav',
 
-beforeCase3Check: '/ai-guide-audio/Before clicking the Check button for Case 3 connections.wav',
-correctConnection1To9: '/ai-guide-audio/Correct Connections.wav',
-connect2To10: "/ai-guide-audio/Connect terminal 2 to terminal 10.wav",
-connect3To11: "/ai-guide-audio/Next, connect the ammeter's terminal 3 to terminal 11..wav",
+beforeCase3Check: '/simulation-audios/Before clicking the Check button for Case 3 connections.wav',
+correctConnection1To9: '/simulation-audios/Correct Connections.wav',
+connect2To10: "/simulation-audios/Connect terminal 2 to terminal 10.wav",
+connect3To11: "/simulation-audios/Next, connect the ammeter's terminal 3 to terminal 11..wav",
 
-connect4To12: "/ai-guide-audio/Connect terminal 4 to terminal 12..wav",
+connect4To12: "/simulation-audios/Connect terminal 4 to terminal 12..wav",
 
-beforeCheckingCurrentSource: '/ai-guide-audio/Before checking, Current Source.wav',
+beforeCheckingCurrentSource: '/simulation-audios/Before checking, Current Source.wav',
 
 beforeCheckingVoltageSource:
-'/ai-guide-audio/During the 2nd case, Voltage source.wav',
+'/simulation-audios/During the 2nd case, Voltage source.wav',
 }
 const AI_GUIDE_AUDIO_OWNER = 'ai-guide'
  const AI_GUIDE_CONNECTION_STEPS = {

@@ -15,7 +15,7 @@
       "description": {
         "en": "The aim of the experiment is to verify Norton’s Theorem."
       },
-      "audio": "/ai-guide-audio/Norton Aim.wav",
+      "audio": "/walkthrough-audios/Aim.wav",
       "placement": "bottom"
     },
     {
@@ -25,9 +25,9 @@
         "en": "Instructions Button"
       },
       "description": {
-        "en": "The Instructions button provides step-by-step guidance for performing the simulation."
+        "en": "The Instructions provide step-by-step guidance on how to perform the simulation."
       },
-      "audio": "/ai-guide-audio/Instructions Button.wav",
+      "audio": "/walkthrough-audios/Instruction button.wav",
       "placement": "right"
     },
     {
@@ -37,9 +37,9 @@
         "en": "AI Guide Button"
       },
       "description": {
-        "en": "The AI Guide assists you at each stage of the simulation."
+        "en": "The AI guide will assist you in performing the simulation accurately at each step."
       },
-      "audio": "/ai-guide-audio/AI Guide Button.wav",
+      "audio": "/walkthrough-audios/Ai guide button.wav",
       "placement": "bottom"
     },
     {
@@ -49,9 +49,9 @@
         "en": "Check Button"
       },
       "description": {
-        "en": "The Check button verifies the current circuit connections. If a wire is incorrect, click its numbered label to remove it. Switch the source on only after the connections are verified."
+        "en": "Check Button: The CHECK button verifies all the connections to ensure that they are correct. "
       },
-      "audio": "/ai-guide-audio/Check Button.wav",
+      "audio": "/walkthrough-audios/Check Button.wav",
       "placement": "right"
     },
     {
@@ -61,9 +61,9 @@
         "en": "Auto Connect Button"
       },
       "description": {
-        "en": "The Auto Connect button creates all required connections for the current case automatically."
+        "en": " The AUTO CONNECT button makes all the connections automatically."
       },
-      "audio": "/ai-guide-audio/Auto Connect Button.wav",
+      "audio": "/walkthrough-audios/Auto Connect Button.wav",
       "placement": "right"
     },
     {
@@ -73,9 +73,9 @@
         "en": "Add Reading Button"
       },
       "description": {
-        "en": "The Add button records the displayed reading in the observation table."
+        "en": " The ADD button adds the readings to the observation table."
       },
-      "audio": "/ai-guide-audio/Add Button.wav",
+      "audio": "/walkthrough-audios/Add Button.wav",
       "placement": "right"
     },
     {
@@ -85,9 +85,9 @@
         "en": "Calculate Button"
       },
       "description": {
-        "en": "The Calculate button fills the recorded resistance and source values in the theoretical verification panel so you can enter the Norton values and verify the load current."
+        "en": " The CALCULATE button auto-fills the resistance and source values in the theoretical verification panel. For verification, you have to manually calculate the load current using the Norton theorem concept and verify it using the VERIFY button."
       },
-      "audio": "/ai-guide-audio/Calculate Button.wav",
+      "audio": "/walkthrough-audios/Calculate Button.wav",
       "placement": "bottom"
     },
     {
@@ -97,9 +97,9 @@
         "en": "Reset Button"
       },
       "description": {
-        "en": "The Reset button returns the simulation to its initial state for a fresh start."
+        "en": "The RESET button refresh the simulation to its initial state for a fresh start."
       },
-      "audio": "/ai-guide-audio/Reset button.wav",
+      "audio": "/walkthrough-audios/Reset Button.wav",
       "placement": "right"
     },
     {
@@ -109,9 +109,9 @@
         "en": "Print Button"
       },
       "description": {
-        "en": "The Print button prints the completed simulation page."
+        "en": "The PRINT button allows you to print the simulation."
       },
-      "audio": "/ai-guide-audio/Print Button.wav",
+      "audio": "/walkthrough-audios/Print Button .wav",
       "placement": "right"
     },
     {
@@ -121,9 +121,9 @@
         "en": "Resistance Sliders"
       },
       "description": {
-        "en": "Set R1, R2, R3 and RL with the resistance sliders. Once all four values are fixed, the sliders lock so the same resistance values are used throughout the experiment."
+        "en": "Set the values of R1, R2, R3 and RL by moving the resistance sliders. These resistance values will remain constant throughout the experiment to ensure accurate verification of Norton’s Theorem."
       },
-      "audio": "/ai-guide-audio/Resistance Sliders.wav",
+      "audio": "/walkthrough-audios/Resistance Sliders.wav",
       "placement": "right"
     },
     {
@@ -133,9 +133,9 @@
         "en": "DC Power Supply"
       },
       "description": {
-        "en": "The DC power supply provides the circuit voltage. Switch it on after the current circuit connections are verified, then set a voltage from 0 to 15 V. The voltage slider locks after its value is fixed."
+        "en": "This section provides the required DC voltage to the circuit. The display shows the active voltage supplied to the circuit, and the slider can be used to set the desired voltage value."
       },
-      "audio": "/ai-guide-audio/Voltage Source.wav",
+      "audio": "/walkthrough-audios/Regulated DC Power Supply.wav",
       "placement": "left"
     },
     {
@@ -145,9 +145,9 @@
         "en": "Ammeter"
       },
       "description": {
-        "en": "The ammeter displays the Norton current (IN) and the load current (IL) in milliamperes for the relevant circuit cases."
+        "en": "This ammeter measures the Norton current (IN) and load current (IL) flowing through the load resistance (RL​). The measured load current is used to verify Norton's Theorem by comparing it with the theoretically calculated load current."
       },
-      "audio": "/ai-guide-audio/DC Ammeters.wav",
+      "audio": "/walkthrough-audios/DC Ammeter .wav",
       "placement": "bottom"
     },
     {
@@ -157,9 +157,9 @@
         "en": "Digital Multimeter"
       },
       "description": {
-        "en": "The digital multimeter operates in resistance mode to measure the Norton equivalent resistance (RN) in kΩ while the independent voltage source is deactivated."
+        "en": "The digital multimeter is used in resistance (kΩ) mode to measure the Norton equivalent resistance (RN​) across the load terminals after removing the load resistance and deactivating the independent voltage source (by replacing it with a short circuit), the equivalent resistance across the load terminals is measured."
       },
-      "audio": "/ai-guide-audio/Resistance Sliders.wav",
+      "audio": "/walkthrough-audios/Digital Multimeter.wav",
       "placement": "left"
     },
     {
@@ -169,9 +169,9 @@
         "en": "Circuit Connections"
       },
       "description": {
-        "en": "Build each required circuit by dragging wires between the numbered terminals, or use Auto Connect. Check the connections before switching on the supply."
+        "en": "This section displays the circuit and allows users to make the required connections by dragging and dropping wires between the connection terminals."
       },
-      "audio": "/ai-guide-audio/Circuit Connections.wav",
+      "audio": "/walkthrough-audios/Circuit Connections.wav",
       "placement": "left"
     },
     {
@@ -181,9 +181,9 @@
         "en": "Observation Table"
       },
       "description": {
-        "en": "The observation table records the measured Norton resistance (RN), Norton current (IN), load resistance (RL), and observed load current (IL)."
+        "en": "This table records the measured Norton current (IN), Norton resistance (RN​), Load resistance (RL) and Load current (IL)."
       },
-      "audio": "/ai-guide-audio/Observation Table.wav",
+      "audio": "/walkthrough-audios/Observation Table.wav",
       "placement": "right"
     },
     {
@@ -193,9 +193,9 @@
         "en": "Equations"
       },
       "description": {
-        "en": "Open this section to review the equations used to determine Norton resistance (RN), Norton current (IN), and load current (IL)."
+        "en": "This section displays the equations used to determine the Norton equivalent resistance (RN), Norton current (IN) and Load current (IL)."
       },
-      "audio": "/ai-guide-audio/equations.wav",
+      "audio": "/walkthrough-audios/Equations.wav",
       "placement": "top"
     },
     {
@@ -205,9 +205,9 @@
         "en": "Theoretical Verification"
       },
       "description": {
-        "en": "After clicking Calculate, enter IN, RN and RL in their allowed ranges. The panel calculates IL with the displayed Norton formula and compares it with the observed load current."
+        "en": " This is the theoretical verification panel where Norton’s Theorem will be verified. Enter the required values and compare the calculated load current with the measured load current to verify the theorem."
       },
-      "audio": "/ai-guide-audio/Calculation Panel.wav",
+      "audio": "/walkthrough-audios/Theoretical Verification.wav",
       "placement": "top"
     },
     {
@@ -217,9 +217,9 @@
         "en": "Generate Report"
       },
       "description": {
-        "en": "After completing the observation table and theoretical verification, generate the summarized simulation report."
+        "en": "The Report button generates a summarised report of the simulation. After completing the observation table and theoretical verification, generate the report. The report will include the time taken to complete the simulation, no. of attempts, simulation summary, the apparatus used, recorded readings, the user-calculated result and the conclusion."
       },
-      "audio": "/ai-guide-audio/Generate Reportw.wav",
+      "audio": "/walkthrough-audios/Generate Report.wav",
       "placement": "top"
     }
   ]
