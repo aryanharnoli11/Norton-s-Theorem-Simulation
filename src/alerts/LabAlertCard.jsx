@@ -39,6 +39,14 @@ const LabAlertCard = ({ alert, onDismiss }) => {
     alert.completionPromise &&
     typeof alert.completionPromise.then === 'function',
   )
+  const [completionFinished, setCompletionFinished] = useState(
+    !waitsForCompletion,
+  )
+  const confirmationDisabled = Boolean(
+    requiresConfirmation &&
+    waitsForCompletion &&
+    !completionFinished,
+  )
   const hasProgressTimer =
     !requiresConfirmation &&
     !waitsForCompletion &&
@@ -92,7 +100,11 @@ const LabAlertCard = ({ alert, onDismiss }) => {
       let isActive = true
       const finish = () => {
         if (isActive) {
-          dismiss('timeout')
+          setCompletionFinished(true)
+
+          if (!requiresConfirmation) {
+            dismiss('timeout')
+          }
         }
       }
 
@@ -115,7 +127,14 @@ const LabAlertCard = ({ alert, onDismiss }) => {
     }, duration)
 
     return () => window.clearTimeout(timer)
-  }, [alert.completionPromise, dismiss, duration, hasProgressTimer, waitsForCompletion])
+  }, [
+    alert.completionPromise,
+    dismiss,
+    duration,
+    hasProgressTimer,
+    requiresConfirmation,
+    waitsForCompletion,
+  ])
 
   useEffect(() => () => {
     if (dismissTimerRef.current) {
@@ -216,6 +235,7 @@ const LabAlertCard = ({ alert, onDismiss }) => {
 
         <button
           className="lab-alert-card__button lab-alert-card__button--primary"
+          disabled={confirmationDisabled}
           onClick={requiresConfirmation ? handleConfirm : handleOk}
           type="button"
         >

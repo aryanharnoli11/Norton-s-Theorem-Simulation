@@ -14,7 +14,7 @@ import { useLabAlerts } from './alerts/useLabAlerts.js'
 // import StatusBar from './components/StatusBar.jsx'
  
 import { calculateReadings } from './utils/circuitMath.js'
-import { generateSuperpositionReport } from './utils/reportGenerator.js'
+import { generateNortonReport } from './utils/reportGenerator.js'
 import {
   AI_GUIDE_MESSAGES,
   AI_GUIDE_STEP_MESSAGES,
@@ -289,7 +289,7 @@ const NORTON_ALERT_MESSAGES = {
   calculationReady:
     'The resistance and source values are displayed in the theoretical verification panel. Calculate the load current manually using the rules of the Norton Theorem, enter the calculated values in the input field, and click the Verify button to verify the theorem.',
   reportGenerated:
-    'Your report has been generated successfully. Click OK to view your report.',
+    'Your report is ready. After the narration finishes, click View Report.',
   simulationReset:
     'The simulation has been reset. You can start again.',
 }
@@ -1503,33 +1503,34 @@ const handleAiGuide = () => {
     return
   }
 
-  const reportObservations = [
-    { caseName: 'Current Source Only', ...observations.currentSourceOnly },
-    { caseName: 'Voltage Source Only', ...observations.voltageSourceOnly },
-    { caseName: 'Both Sources Active', ...observations.bothSources },
-  ]
+  const openReport = () => {
+    const generated = generateNortonReport({
+      observations,
+      resistances: { r1, r2, r3, rl },
+      sessionStart,
+      verificationRows: calculationVerificationRows,
+    })
 
-  const generated = generateSuperpositionReport({
-  observations: reportObservations,
-  resistances: { r1, r2, r3 },
-  sessionStart,
-  verificationRows: calculationVerificationRows,
-})
+    if (!generated) {
+      setStatus('Unable to open the report window.')
+      window.alert('Unable to open the report window. Please allow pop-ups and try again.')
+      return
+    }
 
-  if (!generated) {
-    setStatus('Unable to open the report window.')
-    window.alert('Unable to open the report window. Please allow pop-ups and try again.')
-    return
+    setReportGenerated(true)
+    setStatus('Norton theorem report generated successfully.')
   }
 
-  setReportGenerated(true)
-  setStatus('Superposition theorem report generated successfully.')
   showAlertWithOptionalAudio(
     {
-      title: 'Report Generated',
+      title: 'Report Ready',
       description:
         NORTON_ALERT_MESSAGES.reportGenerated,
       type: 'success',
+      confirmLabel: 'View Report',
+      dedupeKey: 'report-ready',
+      onConfirm: openReport,
+      requiresConfirmation: true,
       icon: '📄',
     },
     AI_GUIDE_AUDIO.report,

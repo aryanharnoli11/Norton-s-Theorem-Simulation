@@ -1411,26 +1411,33 @@ const virtualLabsLogoSrc = new URL('../assets/image.png', import.meta.url).href
   reportWindow.focus()
   return true
 }*/
-const getSuperpositionCase = (observations, caseName) => (
-  observations.find((row) => row.caseName === caseName) ?? {}
-)
+const formatNortonVoltage = (value) => {
+  const voltage = toNumber(value)
 
-const getSuperpositionDifference = (csValue, vsValue, bothValue) => (
-  toNumber(bothValue) - (toNumber(csValue) + toNumber(vsValue))
-)
+  return Number.isInteger(voltage)
+    ? voltage.toFixed(0)
+    : voltage.toFixed(1)
+}
 
-const createSuperpositionObservationRows = (observations) => (
-  observations.map((row, index) => `
+const createNortonObservationRow = (observations) => (
+  `
     <tr>
-      <td>${index + 1}</td>
-      <td>${escapeHtml(row.caseName)}</td>
-      <td>${formatNumber(row.i1)}</td>
-      <td>${formatNumber(row.i2)}</td>
-      <td>${formatNumber(row.i3)}</td>
+      <td>1</td>
+      <td>${formatNortonVoltage(observations.voltage)}</td>
+      <td>${formatNumber(toNumber(observations.shortCircuitCurrent) * 1000)}</td>
+      <td>${formatNumber(toNumber(observations.nortonResistance) / 1000)}</td>
+      <td>${formatNumber(toNumber(observations.loadCurrent) * 1000)}</td>
+      <td>${formatNumber(observations.loadResistance, 1)}</td>
     </tr>
-  `).join('')
+  `
 )
-export const generateSuperpositionReport = ({ observations, resistances, sessionStart,verificationRows = [], }) => {
+
+export const generateNortonReport = ({
+  observations = {},
+  resistances,
+  sessionStart,
+  verificationRows = [],
+}) => {
   const baseHref = new URL(import.meta.env.BASE_URL, window.location.origin).href
   const iitLogoSrc = new URL('../assets/IIT Logo.png', import.meta.url).href
   const virtualLabsLogoSrc = new URL('../assets/image.png', import.meta.url).href
@@ -1451,17 +1458,21 @@ export const generateSuperpositionReport = ({ observations, resistances, session
   const r1 = toNumber(resistances?.r1)
   const r2 = toNumber(resistances?.r2)
   const r3 = toNumber(resistances?.r3)
-
-  const cs = getSuperpositionCase(observations, 'Current Source Only')
-  const vs = getSuperpositionCase(observations, 'Voltage Source Only')
-  const both = getSuperpositionCase(observations, 'Both Sources Active')
-
-  const observationRows = createSuperpositionObservationRows(observations)
+  const rl = toNumber(
+    observations.loadResistance ?? resistances?.rl,
+  )
+  const observationRow = createNortonObservationRow({
+    ...observations,
+    loadResistance: rl,
+  })
+  const theoremVerified =
+    verificationRows.length > 0 &&
+    verificationRows.every((row) => row.verified)
 
   const verificationTableRows = verificationRows.length
   ? verificationRows.map((row, index) => `
       <tr>
-        <td>${row.label ?? `I<sub>${index + 1}</sub>`}</td>
+        <td>${row.label ?? `I<sub>L${index + 1}</sub>`}</td>
         <td>${formatNumber(row.studentValue)}</td>
         <td>${formatNumber(row.measuredValue)}</td>
         <td>${formatNumber(row.difference, 4)}</td>
@@ -1479,7 +1490,7 @@ export const generateSuperpositionReport = ({ observations, resistances, session
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Superposition Theorem Simulation Report</title>
+  <title>Norton's Theorem Simulation Report</title>
   <base href="${escapeHtml(baseHref)}">
 
   <style>
@@ -1769,7 +1780,7 @@ export const generateSuperpositionReport = ({ observations, resistances, session
   <div>
     <p class="experiment-title">
       <strong>Experiment Title:</strong><br>
-      To verify Superposition Theorem
+      To Verify Norton's Theorem
     </p>
   </div>
 
@@ -1802,13 +1813,18 @@ export const generateSuperpositionReport = ({ observations, resistances, session
 
       <h3>Aim</h3>
       <p>
-        To verify Superposition Theorem in a linear resistive electrical network
-        using one independent current source and one independent voltage source.
+        To verify Norton's Theorem by determining the Norton equivalent current
+        (I<sub>N</sub>) and resistance (R<sub>N</sub>), and by comparing the
+        calculated and observed load currents in a linear DC resistive network.
       </p>
 
       <h3>Simulation Summary</h3>
       <p>
-        The guided walkthrough was utilised to perform the experiment step-by-step. The circuit was configured for all three operating conditions, branch currents were recorded for each case, the algebraic sum of the individual source contributions was calculated, and the calculated values were compared with the measured branch currents to verify the Superposition Theorem.
+        The resistance values were set and kept constant throughout the experiment.
+        The independent voltage source was deactivated to measure the Norton
+        resistance, after which the short-circuit current and load current were
+        recorded. The theoretical load current was then calculated from the Norton
+        equivalent values and compared with the observed load current.
       </p>
     </section>
 
@@ -1816,12 +1832,13 @@ export const generateSuperpositionReport = ({ observations, resistances, session
       <h2>Apparatus Used</h2>
 
       <ul class="two-column-list">
-  <li>DC Current Source 10 A</li>
-  <li>DC Voltage Source 10 V</li>
-  <li>DC Ammeters 0–10 A</li>
-  <li>Resistor R1: ${formatNumber(r1,1)} Ω</li>
-  <li>Resistor R2: ${formatNumber(r2,1)} Ω</li>
-  <li>Resistor R3: ${formatNumber(r3,1)} Ω</li>
+  <li>Regulated DC Power Supply (0–15 V)</li>
+  <li>DC Ammeter (0–10 mA)</li>
+  <li>Digital Multimeter (20 kΩ range)</li>
+  <li>Resistor R<sub>1</sub>: ${formatNumber(r1, 1)} kΩ</li>
+  <li>Resistor R<sub>2</sub>: ${formatNumber(r2, 1)} kΩ</li>
+  <li>Resistor R<sub>3</sub>: ${formatNumber(r3, 1)} kΩ</li>
+  <li>Load Resistor R<sub>L</sub>: ${formatNumber(rl, 1)} kΩ</li>
   <li>Connecting Wires</li>
 </ul>
     </section>
@@ -1834,14 +1851,15 @@ export const generateSuperpositionReport = ({ observations, resistances, session
           <thead>
             <tr>
               <th>S.No.</th>
-              <th>Case</th>
-              <th>I<sub>1</sub> (A)</th>
-              <th>I<sub>2</sub> (A)</th>
-              <th>I<sub>3</sub> (A)</th>
+              <th>Power Supply (V)</th>
+              <th>I<sub>N</sub> (mA)</th>
+              <th>R<sub>N</sub> (kΩ)</th>
+              <th>I<sub>L</sub> (mA)</th>
+              <th>R<sub>L</sub> (kΩ)</th>
             </tr>
           </thead>
           <tbody>
-            ${observationRows}
+            ${observationRow}
           </tbody>
         </table>
       </div>
@@ -1850,15 +1868,23 @@ export const generateSuperpositionReport = ({ observations, resistances, session
     <section class="section">
       <h2>Calculations and Verification</h2>
 
+      <p>
+        The Norton load current is calculated using the measured Norton current,
+        Norton resistance, and load resistance.
+      </p>
+
+      <div class="formula-box">
+        I<sub>L</sub> = I<sub>N</sub> / (R<sub>N</sub> + R<sub>L</sub>)
+      </div>
 
       <div class="table-shell" style="margin-top: 14px;">
         <table>
           <thead>
             <tr>
-  <th>Branch Current</th>
-<th>Calculated Value (A)</th>
-<th>Measured Value (A)</th>
-<th>Absolute Difference (A)</th>
+  <th>Current</th>
+<th>Calculated Value (mA)</th>
+<th>Observed Value (mA)</th>
+<th>Absolute Difference (mA)</th>
 <th>Verification Status</th>
 </tr>
           </thead>
@@ -1873,9 +1899,9 @@ export const generateSuperpositionReport = ({ observations, resistances, session
       <h2>Conclusion</h2>
 
       <p class="result-note">
-        The branch currents obtained with both sources active are equal to the
-        algebraic sum of the corresponding currents obtained when each independent
-        source acts alone. Hence, Superposition Theorem is verified.
+        ${theoremVerified
+          ? "The calculated load current matches the observed load current. Hence, Norton's Theorem is verified."
+          : "The calculated and observed load currents do not match within the permitted tolerance. Norton's Theorem has not yet been verified."}
       </p>
     </section>
   </main>
@@ -1904,7 +1930,7 @@ export const generateSuperpositionReport = ({ observations, resistances, session
 
         var opts = {
           margin: [0.18, 0.18, 0.18, 0.18],
-          filename: 'superposition-theorem-report.pdf',
+          filename: 'norton-theorem-report.pdf',
           image: { type: 'jpeg', quality: 0.98 },
           html2canvas: {
             scale: 2,

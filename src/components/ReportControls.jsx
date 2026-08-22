@@ -14,7 +14,7 @@ const ReportControls = ({
     ? 'Report generated. Click to regenerate the report.'
     : !calculationsVerified
       ? 'Verify calculations before generating the report.'
-      : 'Generate the final Superposition Theorem report.'
+      : 'Generate the final Norton Theorem report.'
 
   return (
     <button

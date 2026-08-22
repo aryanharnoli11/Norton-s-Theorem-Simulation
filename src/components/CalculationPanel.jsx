@@ -76,6 +76,10 @@ const formatVoltage = (value) => (
     : value.toFixed(1)
 )
 
+const preventWheelValueChange = (event) => {
+  event.currentTarget.blur()
+}
+
 const CalculationPanel = ({
   observations = {},
   resistanceValues = {},
@@ -206,9 +210,10 @@ const handleVerify = () => {
       Object.values(nortonInputs).filter(
         (value) => value.trim() === '',
       ).length
-    const missingMessage = missingInputCount === 1
-      ? 'Please enter the one missing value before verification.'
-      : 'Please enter all missing values before verification.'
+    const oneValueMissing = missingInputCount === 1
+    const missingMessage = oneValueMissing
+      ? 'Please enter the required value, then click the “Verify” button to verify the theorem.'
+      : 'Please enter all the values, then click the “Verify” button to verify the theorem.'
 
     setVerificationMessage(missingMessage)
 
@@ -217,12 +222,14 @@ const handleVerify = () => {
 
     onShowAlertWithAudio?.(
       {
-        title: 'Missing Calculation Value',
+        title: oneValueMissing
+          ? 'One Calculation Value Is Missing'
+          : 'Multiple Calculation Values Are Missing',
         description: missingMessage,
         type: 'warning',
         target: '#calculation-panel',
       },
-      missingInputCount === 1
+      oneValueMissing
         ? aiGuideAudio?.verifyOneMissing
         : aiGuideAudio?.verifyMultipleMissing,
     )
@@ -567,6 +574,7 @@ const handleVerify = () => {
             I<sub>N</sub>
           </span>
 
+
           <input
             className="norton-formula-input"
             aria-label="Enter Norton current"
@@ -579,6 +587,7 @@ const handleVerify = () => {
             type="number"
             value={nortonInputs.in}
             disabled={!isReady}
+            onWheel={preventWheelValueChange}
             onChange={(event) =>
               handleNortonInputChange(
                 'in',
@@ -616,6 +625,7 @@ const handleVerify = () => {
               type="number"
               value={nortonInputs.rn}
               disabled={!isReady}
+              onWheel={preventWheelValueChange}
               onChange={(event) =>
                 handleNortonInputChange(
                   'rn',
@@ -657,6 +667,7 @@ const handleVerify = () => {
               type="number"
               value={nortonInputs.rl}
               disabled={!isReady}
+              onWheel={preventWheelValueChange}
               onChange={(event) =>
                 handleNortonInputChange(
                   'rl',
