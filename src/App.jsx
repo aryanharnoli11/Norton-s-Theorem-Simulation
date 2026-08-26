@@ -2345,106 +2345,101 @@ const handleAutoConnectComplete = useCallback((result) => {
   Equations
 </button>
 {showFormulaPanel && (
-  <div className="formula-panel">
+  <div
+    aria-labelledby="equations-panel-title"
+    aria-modal="true"
+    className="formula-panel"
+    role="dialog"
+  >
     <div className="formula-panel__header">
-      <h3>Equations Used</h3>
+      <h3 id="equations-panel-title">Norton Theorem Equations</h3>
 
       <button
+        aria-label="Close equations panel"
         className="formula-panel__close"
         type="button"
         onClick={() => setShowFormulaPanel(false)}
       >
-        ×
+        &times;
       </button>
     </div>
 
     <div className="formula-panel__body">
-  <h4>Reference Current Directions</h4>
+      <h4>Norton Resistance (R<sub>N</sub>)</h4>
 
-  <p>The following reference directions are used throughout the experiment:</p>
+      <p>
+        <strong>Norton resistance (R<sub>N</sub>)</strong> is the equivalent
+        resistance of a linear electrical network as seen from the load
+        terminals after removing the load resistance and deactivating all
+        independent sources. It represents the internal resistance of the
+        circuit in its Norton equivalent.
+      </p>
 
-  <ul className="formula-list">
-    <li><strong>I₁:</strong> Left to right through R₁</li>
-    <li><strong>I₂:</strong> Downward through R₂</li>
-    <li><strong>I₃:</strong> Left to right through R₃</li>
-  </ul>
+      <h4>Steps to Calculate R<sub>N</sub></h4>
 
-  <p className="formula-note">
-    A positive value indicates that the current flows in the assumed reference direction.
-    A negative value indicates that the current flows opposite to the assumed direction.
-  </p>
+      <ol className="formula-list">
+        <li>Remove the load resistance (R<sub>L</sub>).</li>
+        <li>
+          Replace all independent voltage sources with short circuits and all
+          independent current sources with open circuits.
+        </li>
+        <li>
+          Calculate the equivalent resistance seen from the load terminals.
+          This equivalent resistance is the Norton resistance (R<sub>N</sub>).
+        </li>
+      </ol>
 
-  <h4>Case 1: Current Source Active</h4>
+      <div className="formula-box">
+        R<sub>N</sub> = R<sub>3</sub> + (R<sub>1</sub> || R<sub>2</sub>)
+        {' = '}
+        R<sub>3</sub> + (R<sub>1</sub> &times; R<sub>2</sub>) /
+        (R<sub>1</sub> + R<sub>2</sub>)
+      </div>
 
-  <p>
-    When only the current source is active, the current divides between the
-    R₂ and R₃ branches according to the current division rule.
-  </p>
+      <h4>Norton Current (I<sub>N</sub>)</h4>
 
-  <div className="formula-box">
-    I₁(CS) = Is
-  </div>
+      <p>
+        <strong>Norton current (I<sub>N</sub>)</strong> is the short-circuit
+        current flowing between the load terminals when the load resistance
+        (R<sub>L</sub>) is removed.
+      </p>
 
-  <div className="formula-box">
-    I₂(CS) = Is × R₃ / (R₂ + R₃)
-  </div>
+      <h4>Steps to Calculate I<sub>N</sub></h4>
 
-  <div className="formula-box">
-    I₃(CS) = Is × R₂ / (R₂ + R₃)
-  </div>
+      <ol className="formula-list">
+        <li>Remove the load resistance (R<sub>L</sub>).</li>
+        <li>Short-circuit the load terminals.</li>
+        <li>Keep all independent sources active.</li>
+        <li>
+          Calculate the current flowing through the short-circuit. This current
+          is the Norton current (I<sub>N</sub>).
+        </li>
+      </ol>
 
-  <h4>Case 2: Voltage Source Active</h4>
+      <div className="formula-box">
+        I<sub>N</sub> = (V &times; R<sub>2</sub>) /
+        (R<sub>1</sub> &times; R<sub>2</sub> + R<sub>1</sub> &times;
+        R<sub>3</sub> + R<sub>2</sub> &times; R<sub>3</sub>)
+      </div>
 
-  <p>
-    When only the voltage source is active, the current through the R₂–R₃ path
-    is obtained using Ohm's Law.
-  </p>
+      <h4>Load Current (I<sub>L</sub>)</h4>
 
-  <div className="formula-box">
-    I₁(VS) = 0
-  </div>
+      <p>
+        <strong>Load current (I<sub>L</sub>)</strong> is the current flowing
+        through the load resistor when it is connected to the Norton equivalent
+        circuit.
+      </p>
 
-  <div className="formula-box">
-    I₂(VS) = V / (R₂ + R₃)
-  </div>
+      <div className="formula-box">
+        I<sub>L</sub> = I<sub>N</sub> &times; R<sub>N</sub> /
+        (R<sub>N</sub> + R<sub>L</sub>)
+      </div>
 
-  <div className="formula-box">
-    I₃(VS) = − V / (R₂ + R₃)
-  </div>
-
-  <h4>Case 3: Both Sources Active</h4>
-
-  <p>
-    According to the Superposition Theorem, the total branch current is the
-    algebraic sum of the currents produced by each independent source acting alone.
-  </p>
-
-  <div className="formula-box">
-    I₁ = I₁(CS) + I₁(VS)
-  </div>
-
-  <div className="formula-box">
-    I₂ = I₂(CS) + I₂(VS)
-  </div>
-
-  <div className="formula-box">
-    I₃ = I₃(CS) + I₃(VS)
-  </div>
-
-  <p className="formula-note">
-    If a branch current is opposite to the assumed reference direction,
-    it appears as a negative quantity and is automatically subtracted during
-    algebraic addition.
-  </p>
-
-  <h4>Verification of Superposition Theorem</h4>
-
-  <p>
-    The theorem is verified when the branch currents measured with both sources
-    active are equal to the algebraic sum of the corresponding currents obtained
-    from Case 1 and Case 2.
-  </p>
-</div>
+      <p className="formula-note">
+        Here, V is the independent voltage source used in this experiment, and
+        || denotes a parallel combination.
+      </p>
+    </div>
   </div>
 )}
 
