@@ -398,7 +398,15 @@
   font-weight: 700;
   line-height: 1.35;
 }
+.action-instructions-panel__substeps ul {
+  margin: 4px 0 0;
+  padding-left: 16px;
+  list-style: disc outside;
+}
 
+.action-instructions-panel__substeps ul li {
+  padding-left: 2px;
+}
 .action-instructions-panel__steps strong {
   color: #6d3d1c;
   font-weight: 900;
